@@ -31,16 +31,5 @@ public class User {
     @Column(name = "role")
     private String role;
 
-    public User() {
-    }
 
-    public User(Integer id, String phone, String password, String email, String linkContactInfo, String token, String role) {
-        this.id = id;
-        this.phone = phone;
-        this.password = password;
-        this.email = email;
-        this.linkContactInfo = linkContactInfo;
-        this.token = token;
-        this.role = role;
-    }
 }
