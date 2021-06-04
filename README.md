@@ -29,3 +29,6 @@
 * Reply report
 * Delete, ban end-user
 * Show list end-users in order ( number of reports, name)
+* Add, delete type of product
+* Add, delete type of report
+* Add, delete type of area
