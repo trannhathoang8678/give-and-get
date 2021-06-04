@@ -18,7 +18,7 @@
 * Display user infomation
 * Update user information
 * Send notification to donor when have receiver
-3. Censor function
+3. Mod function
 * Delete donations of end-users
 * Show report
 * Reply report
