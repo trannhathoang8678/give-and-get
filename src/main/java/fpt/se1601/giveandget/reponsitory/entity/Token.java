@@ -6,28 +6,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
-@Table(name = "`USER`")
+@Table(name = "`TOKEN`")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "phone")
-    private String phone;
-    @Column(name = "password")
-    private String password;
-    @Column(name = "email")
-    private String email;
-    @Column(name = "link_contact_info")
-    private String linkContactInfo;
     @Column(name = "token")
     private String token;
-    @Column(name = "role")
-    private String role;
+    @Column(name = "created_timestamp")
+    private Timestamp createdTimestamp;
 }
