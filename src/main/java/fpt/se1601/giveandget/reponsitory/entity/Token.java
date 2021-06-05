@@ -1,9 +1,6 @@
 package fpt.se1601.giveandget.reponsitory.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -13,6 +10,7 @@ import java.util.Set;
 @Table(name = "`TOKEN`")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Token {
