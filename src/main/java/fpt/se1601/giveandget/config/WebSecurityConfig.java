@@ -40,35 +40,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-
-        http.csrf().disable();
-
-        // Các trang không yêu cầu login
-        http.authorizeRequests().antMatchers("/", "/login", "/logout").permitAll();
-
-        // Trang /userInfo yêu cầu phải login với vai trò ROLE_USER hoặc ROLE_ADMIN.
-        // Nếu chưa login, nó sẽ redirect tới trang /login.
-        http.authorizeRequests().antMatchers("/userInfo").access("hasAnyRole('USER', 'ADMIN')");
-
-        // Trang chỉ dành cho ADMIN
-        http.authorizeRequests().antMatchers("/admin").access("hasRole('ADMIN')");
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/books/{\\d+}/abc").hasRole("ADMIN");
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/books/**").hasRole("ADMIN");
-        // Khi người dùng đã login, với vai trò XX.
-        // Nhưng truy cập vào trang yêu cầu vai trò YY,
-        // Ngoại lệ AccessDeniedException sẽ ném ra.
-        http.authorizeRequests().and().exceptionHandling().accessDeniedPage("/403");
-
-        // Cấu hình cho Login Form.
-        http.authorizeRequests().and().formLogin()//
-                // Submit URL của trang login
-                .loginProcessingUrl("/j_spring_security_check") // Submit URL
-                .loginPage("/login")//
-                .defaultSuccessUrl("/userInfo")//
-                .failureUrl("/login?error=true")//
-                .usernameParameter("username")//
+        http
+                .authorizeRequests()
+                .antMatchers("/register").permitAll()
+                .antMatchers("/").hasRole("USER")
+                .antMatchers("/admin").hasRole("ADMIN")
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .usernameParameter("email")
                 .passwordParameter("password")
-                // Cấu hình cho Logout Page.
-                .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
+                .defaultSuccessUrl("/")
+                .failureUrl("/login?error")
+                .and()
+                .exceptionHandling()
+                .accessDeniedPage("/403");
     }
+
 }
