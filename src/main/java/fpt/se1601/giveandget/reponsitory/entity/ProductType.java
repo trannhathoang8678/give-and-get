@@ -6,23 +6,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.util.Set;
 
 @Entity
-@Table(name = "`TOKEN`")
+@Table(name = "`PRODUCT_TYPE`")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Token {
+public class ProductType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "token")
-    private String token;
-    @Column(name = "created_timestamp")
-    private Timestamp createdTimestamp;
-
+    @Column(name = "name")
+    private String name;
+    @OneToMany(mappedBy = "productType")
+    private Set<Donation> donations;
 }

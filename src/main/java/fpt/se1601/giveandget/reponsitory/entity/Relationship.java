@@ -18,9 +18,10 @@ public class Relationship {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "USER_id")
-    private Integer userID;
-    @Column(name = "DONARION_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "USER_id")
+    private User user;
+    @Column(name = "DONATION_id")
     private Integer donationID;
     @Column(name = "is_donor")
     private short isDonor;

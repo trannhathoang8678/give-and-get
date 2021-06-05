@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "`USER`")
@@ -26,8 +27,11 @@ public class User {
     private String email;
     @Column(name = "link_contact_info")
     private String linkContactInfo;
-    @Column(name = "token")
-    private String token;
     @Column(name = "role")
     private String role;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "TOKEN_id")
+    private Token token;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Relationship> relationships;
 }
