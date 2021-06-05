@@ -29,8 +29,8 @@ public class Donation {
     @Column(name = "link_images")
     private String linkImages;
     @ManyToOne
-    @JoinColumn(name = "areaID")
-    private Area area;
+    @JoinColumn(name = "typeID")
+    private DonationType donationType;
     @Column(name = "description")
     private String description;
     @Column(name = "created_timestamp")

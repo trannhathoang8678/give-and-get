@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `ggdb`.`USER` (
   `phone` CHAR(10) NOT NULL,
   `password` VARCHAR(45) NOT NULL,
   `email` VARCHAR(45) NULL,
-  `name` VARCHAR(20) NOT NULL,
+  `name` VARCHAR(45) NOT NULL,
   `link_contact_info` VARCHAR(45) NULL,
   `role` VARCHAR(45) NOT NULL,
   `TOKEN_id` INT NOT NULL,
@@ -50,9 +50,9 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ggdb`.`PRODUCT_TYPE`
+-- Table `ggdb`.`DONATION_TYPE`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ggdb`.`PRODUCT_TYPE` (
+CREATE TABLE IF NOT EXISTS `ggdb`.`DONATION_TYPE` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
@@ -87,7 +87,7 @@ CREATE TABLE IF NOT EXISTS `ggdb`.`DONATION` (
   INDEX `fk_PRODUCT_AREA1_idx` (`AREA_id` ASC),
   CONSTRAINT `fk_PRODUCT_TYPE1`
     FOREIGN KEY (`TYPE_id`)
-    REFERENCES `ggdb`.`PRODUCT_TYPE` (`id`)
+    REFERENCES `ggdb`.`DONATION_TYPE` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_PRODUCT_AREA1`

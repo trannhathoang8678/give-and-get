@@ -9,18 +9,18 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "`PRODUCT_TYPE`")
+@Table(name = "`DONATION_TYPE`")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductType {
+public class DonationType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
     @Column(name = "name")
     private String name;
-    @OneToMany(mappedBy = "productType")
+    @OneToMany(mappedBy = "donationType")
     private Set<Donation> donations;
 }
