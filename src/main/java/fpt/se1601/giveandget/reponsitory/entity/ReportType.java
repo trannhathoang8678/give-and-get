@@ -6,24 +6,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
-@Table(name = "`RELATIONSHIP`")
+@Table(name = "`REPORT_TYPE`")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Relationship {
+public class ReportType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_id")
-    private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DONATION_id")
-    private Donation donation;
-    @Column(name = "is_donor")
-    private short isDonor;
+    @Column(name = "name")
+    private String name;
+    @OneToMany(mappedBy = "reportType")
+    private Set<Report> reports;
 }

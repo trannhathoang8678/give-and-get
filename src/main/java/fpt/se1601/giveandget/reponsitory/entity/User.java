@@ -34,4 +34,6 @@ public class User {
     private Token token;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Relationship> relationships;
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<Comment> commentss;
 }

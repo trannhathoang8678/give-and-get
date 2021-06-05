@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Set;
 
 @Entity
 @Table(name = "`DONATION`")
@@ -35,4 +36,8 @@ public class Donation {
     private String description;
     @Column(name = "created_timestamp")
     private Timestamp timestamp;
+    @OneToMany(mappedBy = "donation", fetch = FetchType.LAZY)
+    private Set<Relationship> relationships;
+    @OneToMany(mappedBy = "donation", fetch = FetchType.LAZY)
+    private Set<Comment> commentss;
 }

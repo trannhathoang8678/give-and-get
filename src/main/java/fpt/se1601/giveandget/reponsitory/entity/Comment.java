@@ -8,12 +8,12 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "`RELATIONSHIP`")
+@Table(name = "`COMMENT`")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Relationship {
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -24,6 +24,6 @@ public class Relationship {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DONATION_id")
     private Donation donation;
-    @Column(name = "is_donor")
-    private short isDonor;
+    @Column(name = "content")
+    private String content;
 }
