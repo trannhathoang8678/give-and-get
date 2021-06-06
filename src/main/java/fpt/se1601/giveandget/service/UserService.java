@@ -32,6 +32,7 @@ public class UserService implements UserDetailsService  {
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
         User user = userRepository.findOneByPhone(phone);
         if (user == null) {
+            System.out.println(phone.length());
             System.out.println("User not found! " + phone);
             throw new UsernameNotFoundException("User has" + phone + " was not found in the database");
         }
@@ -39,7 +40,7 @@ public class UserService implements UserDetailsService  {
 
         List<String> roles = Arrays.stream(user.getRole().split(",")).collect(Collectors.toList());
 
-        List<GrantedAuthority> grantList = new ArrayList<GrantedAuthority>();
+        List<GrantedAuthority> grantList = new ArrayList<>();
         if (roles != null) {
             for (String role : roles) {
                 grantList.add(new SimpleGrantedAuthority(role));

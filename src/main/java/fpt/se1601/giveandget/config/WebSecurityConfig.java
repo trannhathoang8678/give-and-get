@@ -28,11 +28,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             List<User> roleAdminUsers = userService.getUsersHaveRole("ADMIN");
             List<User> roleModUsers = userService.getUsersHaveRole("MOD");
             for(User user : roleUserUsers)
-                auth.inMemoryAuthentication().withUser(user.getEmail()).password(user.getPassword()).roles("USER");
+                auth.inMemoryAuthentication().withUser(user.getPhone()).password(user.getPassword()).roles("USER");
             for(User user : roleAdminUsers)
-                auth.inMemoryAuthentication().withUser(user.getEmail()).password(user.getPassword()).roles("ADMIN");
+                auth.inMemoryAuthentication().withUser(user.getPhone()).password(user.getPassword()).roles("ADMIN");
             for(User user : roleModUsers)
-                auth.inMemoryAuthentication().withUser(user.getEmail()).password(user.getPassword()).roles("MOD");
+                auth.inMemoryAuthentication().withUser(user.getPhone()).password(user.getPassword()).roles("MOD");
             auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,15 +40,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable();
         http
                 .authorizeRequests()
                 .antMatchers("/register").permitAll()
-                .antMatchers("/").hasRole("USER")
+                .antMatchers("/").hasRole("ADMIN")
                 .antMatchers("/admin").hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .loginPage("/login")
-                .usernameParameter("email")
+                .loginProcessingUrl("/j_spring_security_check")
+                .usernameParameter("phone")
                 .passwordParameter("password")
                 .defaultSuccessUrl("/")
                 .failureUrl("/login?error")
