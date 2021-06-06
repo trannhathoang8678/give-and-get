@@ -24,7 +24,7 @@ public class DemoController {
     }
 
     @GetMapping("/login")
-    public ModelAndView getLogin(Model model) {
+    public ModelAndView getLogin() {
         ModelAndView modelAndView = new ModelAndView("login");
         return modelAndView;
     }
