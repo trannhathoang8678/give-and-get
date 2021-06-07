@@ -23,4 +23,12 @@ public class Token {
     @Column(name = "created_timestamp")
     private Timestamp createdTimestamp;
 
+    @Override
+    public String toString() {
+        return "Token{" +
+                "id=" + id +
+                ", token='" + token + '\'' +
+                ", createdTimestamp=" + createdTimestamp +
+                '}';
+    }
 }

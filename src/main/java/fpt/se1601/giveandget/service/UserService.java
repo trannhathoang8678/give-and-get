@@ -1,6 +1,8 @@
 package fpt.se1601.giveandget.service;
 
+import fpt.se1601.giveandget.reponsitory.TokenRepository;
 import fpt.se1601.giveandget.reponsitory.UserRepository;
+import fpt.se1601.giveandget.reponsitory.entity.Token;
 import fpt.se1601.giveandget.reponsitory.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 public class UserService implements UserDetailsService  {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TokenRepository tokenRepository;
     public List<User> getUsersHaveRole(String role){
         try{
         return userRepository.findByRole(role);
@@ -47,7 +51,7 @@ public class UserService implements UserDetailsService  {
             }
         }
 
-        UserDetails userDetails = (UserDetails) new org.springframework.security.core.userdetails.User(user.getPhone(),
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getPhone(),
                 user.getPassword(), grantList);
         return userDetails;
     }
