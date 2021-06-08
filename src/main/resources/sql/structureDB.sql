@@ -19,7 +19,7 @@ USE `ggdb` ;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ggdb`.`TOKEN` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `token` VARCHAR(45) NULL,
+  `token` VARCHAR(255) NOT NULL,
   `created_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB;
@@ -30,16 +30,15 @@ ENGINE = InnoDB;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ggdb`.`USER` (
   `id` INT NOT NULL AUTO_INCREMENT,
-  `phone` CHAR(10) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
   `password` VARCHAR(70) NOT NULL,
-  `email` VARCHAR(45) NULL,
+  `phone` CHAR(10) NULL,
   `name` VARCHAR(20) NOT NULL,
   `link_contact_info` VARCHAR(70) NULL,
   `role` VARCHAR(45) NOT NULL,
   `TOKEN_id` INT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC),
-  UNIQUE INDEX `phone_UNIQUE` (`phone` ASC),
   INDEX `fk_USER_TOKEN_idx` (`TOKEN_id` ASC),
   CONSTRAINT `fk_USER_TOKEN`
     FOREIGN KEY (`TOKEN_id`)
