@@ -12,9 +12,9 @@ public class TokenService {
     TokenRepository tokenRepository;
     @Autowired
     UserRepository userRepository;
-    public Token findTokenByPhone(String phone){
+    public Token findTokenByEmail(String email){
         try {
-            return tokenRepository.findOneById(userRepository.findTokenIdByPhone(phone));
+            return tokenRepository.findOneById(userRepository.findTokenIdByEmail(email));
         }
         catch (Exception e){
             e.printStackTrace();
