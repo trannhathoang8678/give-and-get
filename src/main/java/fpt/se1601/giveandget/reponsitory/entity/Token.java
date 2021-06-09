@@ -20,7 +20,7 @@ public class Token {
     private Integer id;
     @Column(name = "token")
     private String token;
-    @Column(name = "created_timestamp")
+    @Column(name = "created_timestamp", updatable = false)
     private Timestamp createdTimestamp;
 
     @Override

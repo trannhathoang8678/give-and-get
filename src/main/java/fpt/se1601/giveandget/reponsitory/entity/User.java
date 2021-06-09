@@ -27,7 +27,7 @@ public class User {
     private String linkContactInfo;
     @Column(name = "role")
     private String role;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     @JoinColumn(name = "TOKEN_id")
     private Token token;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
