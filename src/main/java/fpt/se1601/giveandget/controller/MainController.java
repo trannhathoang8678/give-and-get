@@ -6,9 +6,7 @@ import fpt.se1601.giveandget.reponsitory.entity.User;
 import fpt.se1601.giveandget.service.TokenService;
 import fpt.se1601.giveandget.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -36,14 +34,14 @@ public class MainController {
     }
 
     @GetMapping("/login")
-    public String login(@RequestBody User user, HttpServletResponse response) {
+    public String login(@RequestParam String email, @RequestParam String password, HttpServletResponse response) {
         try {
-            if (userService.login(user.getEmail(), user.getPassword()) != null)
-            {
-                response.addHeader(GatewayConstant.AUTHORIZATION_HEADER, tokenService.createTokenForUserHasEmail(user.getEmail()));
+
+            if (userService.login(email, password) != null) {
+                response.addHeader(GatewayConstant.AUTHORIZATION_HEADER, tokenService.addTokenForUserHasEmail(email));
                 return "Login success";
             }
-            if(userService.isEmailExists(user.getEmail()))
+            if (userService.isEmailExists(email))
                 return "Password is wrong";
             return "Email is not exist";
         } catch (Exception e) {
@@ -51,20 +49,27 @@ public class MainController {
             return "Login error";
         }
     }
-    @GetMapping("/register")
-    public String register(@RequestBody User user,@RequestBody String token) {
-        try {
-            if (true)
-            {
 
-                return "Register success";
-            }
-            return "Register failed";
+    @PutMapping("/register")
+    public String register(@RequestBody User user) {
+        try {
+            return userService.register(user.getEmail(), user.getPassword(), user.getToken().getToken());
         } catch (Exception e) {
             e.printStackTrace();
             return "Register error";
         }
     }
+
+    @PostMapping("/token")
+    public String sendTokenToEmail(String email) {
+        try {
+            return userService.sendTokenToEmail(email);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Register error";
+        }
+    }
+
     @GetMapping("/test")
     public Token getToken() {
         return tokenService.findTokenByEmail("0987654321");

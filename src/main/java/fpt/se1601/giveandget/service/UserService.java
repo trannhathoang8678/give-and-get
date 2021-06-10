@@ -30,26 +30,13 @@ public class UserService {
     public User login(String email,String password){
         try {
              User user = userRepository.findOneByEmail(email);
+             if(user == null) return null;
              if(new BCryptPasswordEncoder().matches(password, user.getPassword()))
                  return user;
-             else return null;
+              return null;
         }
         catch (Exception e)
         {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    public User addUser(User user){
-        try {
-
-            Token token = new Token();
-            String sessionToken = UUID.randomUUID().toString();
-            token.setToken(sessionToken);
-            user.setToken(token);
-            user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
-            return userRepository.save(user);
-        }catch (Exception e){
             e.printStackTrace();
             return null;
         }
@@ -80,10 +67,10 @@ public class UserService {
             return "Please click sent token button";
         if (temporaryUser.getPassword() != null)
             return "Email has already regitered";
-        String sentToken = temporaryUser.getToken();
+        String sentToken = temporaryUser.getToken().getToken();
         if (!sentToken.equals(token))
             return "Wrong token, please check or send another token ";
-        temporaryUser.setPassword(password);
+        temporaryUser.setPassword(new BCryptPasswordEncoder().encode(password));
         userRepository.save(temporaryUser);
         return "Register success";
     }
@@ -93,14 +80,14 @@ public class UserService {
         {User temporaryUser = userRepository.findOneByEmail(email);
             Token tokenEntity = new Token();
             String token = generateRandomString(6);
-            tokenEntity.setToken();
+            tokenEntity.setToken(token);
             if (temporaryUser == null) {
                 temporaryUser = new User(email, tokenEntity);
             } else {
                 tokenEntity.setToken(token);
             }
             userRepository.save(temporaryUser);
-            sendEmailService.sendEmail("Token",email,token);
+            sendEmailService.sendEmail("Token to verify Give And Get website",email,token);
             return "Sent token to email";}
         catch (Exception e)
         {

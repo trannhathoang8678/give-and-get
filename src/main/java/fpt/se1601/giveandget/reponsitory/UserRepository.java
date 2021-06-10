@@ -11,7 +11,7 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User,Integer> {
     List<User> findByRole(String Role);
     User findOneByEmail(String email);
-    @Query(nativeQuery = true, value = "SELECT `TOKEN_id` FROM USER WHERE phone = ?1")
+    @Query(nativeQuery = true, value = "SELECT `TOKEN_id` FROM USER WHERE email = ?1")
     int findTokenIdByEmail(String email);
     User findOneByEmailAndPassword(String email,String password);
     boolean existsByEmail(String email);

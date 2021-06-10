@@ -25,7 +25,7 @@ public class TokenService {
         }
     }
 
-    public String createTokenForUserHasEmail(String userEmail) {
+    public String addTokenForUserHasEmail(String userEmail) {
         try {
             int tokenId = userRepository.findTokenIdByEmail(userEmail);
             Token token = tokenRepository.findOneById(tokenId);

@@ -14,13 +14,15 @@ public class SendEmailService {
 
     public void sendEmail(String title, String email, String content) throws Exception{
 
-        Properties prop = new Properties();
-        prop.put("mail.smtp.host", "smtp.gmail.com");
-        prop.put("mail.smtp.port", "587");
-        prop.put("mail.smtp.auth", "true");
-        prop.put("mail.smtp.starttls.enable", "true"); //TLS
-
-        Session session = Session.getInstance(prop,
+        Properties props = new Properties();
+        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        props.put("mail.smtp.starttls.enable", "true");
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true"); //TLS
+        props.put("mail.smtp.ssl.protocols","TLSv1.2");
+        Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password);
@@ -37,10 +39,7 @@ public class SendEmailService {
             );
             message.setSubject(title);
             message.setText(content);
-
             Transport.send(message);
-
-
         } catch (MessagingException e) {
             e.printStackTrace();
         }
