@@ -1,15 +1,14 @@
 package fpt.se1601.giveandget.service;
 
 import fpt.se1601.giveandget.reponsitory.UserRepository;
-import fpt.se1601.giveandget.reponsitory.entity.Token;
-import fpt.se1601.giveandget.reponsitory.entity.User;
+import fpt.se1601.giveandget.reponsitory.entity.TokenEntity;
+import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class UserService {
@@ -19,7 +18,7 @@ public class UserService {
     SendEmailService sendEmailService;
     private static final String DATA_FOR_RANDOM_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static SecureRandom random = new SecureRandom();
-    public List<User> getUsersHaveRole(String role) {
+    public List<UserEntity> getUsersHaveRole(String role) {
         try {
             return userRepository.findByRole(role);
         } catch (Exception e) {
@@ -27,12 +26,12 @@ public class UserService {
             return null;
         }
     }
-    public User login(String email,String password){
+    public UserEntity login(String email, String password){
         try {
-             User user = userRepository.findOneByEmail(email);
-             if(user == null) return null;
-             if(new BCryptPasswordEncoder().matches(password, user.getPassword()))
-                 return user;
+             UserEntity userEntity = userRepository.findOneByEmail(email);
+             if(userEntity == null) return null;
+             if(new BCryptPasswordEncoder().matches(password, userEntity.getPassword()))
+                 return userEntity;
               return null;
         }
         catch (Exception e)
@@ -62,31 +61,32 @@ public class UserService {
         return sb.toString();
     }
     public String register(String email, String password, String token) {
-        User temporaryUser = userRepository.findOneByEmail(email);
-        if (temporaryUser == null)
+        UserEntity temporaryUserEntity = userRepository.findOneByEmail(email);
+        if (temporaryUserEntity == null)
             return "Please click sent token button";
-        if (temporaryUser.getPassword() != null)
+        if (temporaryUserEntity.getPassword() != null)
             return "Email has already regitered";
-        String sentToken = temporaryUser.getToken().getToken();
+        String sentToken = temporaryUserEntity.getTokenEntity().getToken();
         if (!sentToken.equals(token))
             return "Wrong token, please check or send another token ";
-        temporaryUser.setPassword(new BCryptPasswordEncoder().encode(password));
-        userRepository.save(temporaryUser);
+        temporaryUserEntity.setPassword(new BCryptPasswordEncoder().encode(password));
+        userRepository.save(temporaryUserEntity);
         return "Register success";
     }
 
     public String sendTokenToEmail(String email) {
         try
-        {User temporaryUser = userRepository.findOneByEmail(email);
-            Token tokenEntity = new Token();
+        {
+            UserEntity temporaryUserEntity = userRepository.findOneByEmail(email);
+            TokenEntity tokenEntity = new TokenEntity();
             String token = generateRandomString(6);
             tokenEntity.setToken(token);
-            if (temporaryUser == null) {
-                temporaryUser = new User(email, tokenEntity);
+            if (temporaryUserEntity == null) {
+                temporaryUserEntity = new UserEntity(email, tokenEntity);
             } else {
                 tokenEntity.setToken(token);
             }
-            userRepository.save(temporaryUser);
+            userRepository.save(temporaryUserEntity);
             sendEmailService.sendEmail("Token to verify Give And Get website",email,token);
             return "Sent token to email";}
         catch (Exception e)
@@ -97,13 +97,13 @@ public class UserService {
     }
     public String retrievePassword(String email,String token) {
         sendTokenToEmail(email);
-        User temporaryUser = userRepository.findOneByEmail(email);
-        if ( temporaryUser.getPassword() == null)
+        UserEntity temporaryUserEntity = userRepository.findOneByEmail(email);
+        if ( temporaryUserEntity.getPassword() == null)
             return "Email have not been registerd";
-        String sentToken = temporaryUser.getToken().getToken();
+        String sentToken = temporaryUserEntity.getTokenEntity().getToken();
         if (!sentToken.equals(token))
             return "Wrong token, please check or send another token ";
-        return "Password: " + temporaryUser.getPassword();
+        return "Password: " + temporaryUserEntity.getPassword();
     }
 }
 

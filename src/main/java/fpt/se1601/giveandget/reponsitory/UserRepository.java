@@ -1,6 +1,6 @@
 package fpt.se1601.giveandget.reponsitory;
 
-import fpt.se1601.giveandget.reponsitory.entity.User;
+import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -8,11 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface UserRepository extends JpaRepository<User,Integer> {
-    List<User> findByRole(String Role);
-    User findOneByEmail(String email);
+public interface UserRepository extends JpaRepository<UserEntity,Integer> {
+    List<UserEntity> findByRole(String Role);
+    UserEntity findOneByEmail(String email);
     @Query(nativeQuery = true, value = "SELECT `TOKEN_id` FROM USER WHERE email = ?1")
     int findTokenIdByEmail(String email);
-    User findOneByEmailAndPassword(String email,String password);
+    @Query(nativeQuery = true, value = "SELECT `role` FROM USER WHERE `TOKEN_id` = ?1")
+    String findRoleByTokenId(int tokenId);
     boolean existsByEmail(String email);
 }

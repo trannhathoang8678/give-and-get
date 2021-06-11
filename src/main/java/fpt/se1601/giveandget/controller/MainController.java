@@ -1,13 +1,12 @@
 package fpt.se1601.giveandget.controller;
 
 import fpt.se1601.giveandget.interceptor.GatewayConstant;
-import fpt.se1601.giveandget.reponsitory.entity.Token;
-import fpt.se1601.giveandget.reponsitory.entity.User;
+import fpt.se1601.giveandget.reponsitory.entity.TokenEntity;
+import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import fpt.se1601.giveandget.service.TokenService;
 import fpt.se1601.giveandget.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -51,9 +50,9 @@ public class MainController {
     }
 
     @PutMapping("/register")
-    public String register(@RequestBody User user) {
+    public String register(@RequestBody UserEntity userEntity) {
         try {
-            return userService.register(user.getEmail(), user.getPassword(), user.getToken().getToken());
+            return userService.register(userEntity.getEmail(), userEntity.getPassword(), userEntity.getTokenEntity().getToken());
         } catch (Exception e) {
             e.printStackTrace();
             return "Register error";
@@ -71,7 +70,7 @@ public class MainController {
     }
 
     @GetMapping("/test")
-    public Token getToken() {
+    public TokenEntity getToken() {
         return tokenService.findTokenByEmail("0987654321");
     }
 }

@@ -5,23 +5,23 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "`COMMENT`")
+@Table(name = "`RELATIONSHIP`")
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Comment {
+public class RelationshipEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_id")
-    private User user;
+    private UserEntity userEntity;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DONATION_id")
-    private Donation donation;
-    @Column(name = "content")
-    private String content;
+    private DonationEntity donationEntity;
+    @Column(name = "is_donor")
+    private short isDonor;
 }

@@ -6,7 +6,7 @@
 * Display areas
 * Display types of donation
 * Display donation in detail
-2. End-user function
+2. End-userEntity function
 * Login/Logout
 * Register (Send SMS to verify)
 * Retrieve password (Send SMS to verify)
@@ -15,19 +15,19 @@
 * Save interested donation
 * Display saved donations
 * Display donor/receive donations
-* Display user infomation
-* Update user information
+* Display userEntity infomation
+* Update userEntity information
 * Send notification to donor when have receiver
 3. Mod function
 * Delete donations of end-users
 * Show report
 * Reply report
 4. Admin function
-* Add, delete right to end-user be censor
+* Add, delete right to end-userEntity be censor
 * Delete donations of end-users
 * Show report
 * Reply report
-* Delete, ban end-user
+* Delete, ban end-userEntity
 * Show list end-users in order ( number of reports, name)
 * Add, delete type of product
 * Add, delete type of report

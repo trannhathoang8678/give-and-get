@@ -2,8 +2,7 @@ package fpt.se1601.giveandget.service;
 
 import fpt.se1601.giveandget.reponsitory.TokenRepository;
 import fpt.se1601.giveandget.reponsitory.UserRepository;
-import fpt.se1601.giveandget.reponsitory.entity.Token;
-import fpt.se1601.giveandget.reponsitory.entity.User;
+import fpt.se1601.giveandget.reponsitory.entity.TokenEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +15,7 @@ public class TokenService {
     @Autowired
     UserRepository userRepository;
 
-    public Token findTokenByEmail(String email) {
+    public TokenEntity findTokenByEmail(String email) {
         try {
             return tokenRepository.findOneById(userRepository.findTokenIdByEmail(email));
         } catch (Exception e) {
@@ -28,13 +27,22 @@ public class TokenService {
     public String addTokenForUserHasEmail(String userEmail) {
         try {
             int tokenId = userRepository.findTokenIdByEmail(userEmail);
-            Token token = tokenRepository.findOneById(tokenId);
+            TokenEntity tokenEntity = tokenRepository.findOneById(tokenId);
             String sessionToken =UUID.randomUUID().toString();
-            token.setToken(sessionToken);
-            tokenRepository.save(token);
+            tokenEntity.setToken(sessionToken);
+            tokenRepository.save(tokenEntity);
             return  sessionToken;
         }catch (Exception e){
             e.printStackTrace();
+            return null;
+        }
+    }
+    public String getTokenRole(String token){
+        try{
+            return userRepository.findRoleByTokenId(tokenRepository.findTokenId(token));
+        }
+        catch (Exception e){
+            System.out.println("Token is not existed");
             return null;
         }
     }

@@ -12,7 +12,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -28,16 +28,16 @@ public class User {
     @Column(name = "role")
     private String role;
 
-    public User(String email, Token token) {
+    public UserEntity(String email, TokenEntity tokenEntity) {
         this.email = email;
-        this.token = token;
+        this.tokenEntity = tokenEntity;
     }
 
     @OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     @JoinColumn(name = "TOKEN_id")
-    private Token token;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Relationship> relationships;
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    private Set<Comment> commentss;
+    private TokenEntity tokenEntity;
+    @OneToMany( fetch = FetchType.LAZY)
+    private Set<RelationshipEntity> relationshipEntities;
+    @OneToMany( fetch = FetchType.LAZY)
+    private Set<CommentEntity> commentEntities;
 }

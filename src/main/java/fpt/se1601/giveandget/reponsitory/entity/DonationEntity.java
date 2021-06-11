@@ -13,7 +13,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Donation {
+public class DonationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -24,18 +24,18 @@ public class Donation {
     private String address;
     @ManyToOne
     @JoinColumn(name = "areaID")
-    private Area area;
+    private AreaEntity areaEntity;
     @Column(name = "link_images")
     private String linkImages;
     @ManyToOne
     @JoinColumn(name = "typeID")
-    private DonationType donationType;
+    private DonationTypeEntity donationType;
     @Column(name = "description")
     private String description;
     @Column(name = "created_timestamp")
     private Timestamp timestamp;
-    @OneToMany(mappedBy = "donation", fetch = FetchType.LAZY)
-    private Set<Relationship> relationships;
-    @OneToMany(mappedBy = "donation", fetch = FetchType.LAZY)
-    private Set<Comment> commentss;
+    @OneToMany( fetch = FetchType.LAZY)
+    private Set<RelationshipEntity> relationshipEntities;
+    @OneToMany( fetch = FetchType.LAZY)
+    private Set<CommentEntity> commentEntities;
 }
