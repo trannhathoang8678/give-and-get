@@ -1,6 +1,7 @@
 package fpt.se1601.giveandget.reponsitory.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
@@ -34,8 +35,11 @@ public class DonationEntity {
     private String description;
     @Column(name = "created_timestamp")
     private Timestamp timestamp;
-    @OneToMany( fetch = FetchType.LAZY)
+    @Column(name = "is_received")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean is_received;
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<RelationshipEntity> relationshipEntities;
-    @OneToMany( fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<CommentEntity> commentEntities;
 }
