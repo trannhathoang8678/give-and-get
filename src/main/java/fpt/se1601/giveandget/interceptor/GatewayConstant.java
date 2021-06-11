@@ -1,9 +1,7 @@
 package fpt.se1601.giveandget.interceptor;
 
 import fpt.se1601.giveandget.reponsitory.entity.ApiEntity;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class GatewayConstant {
@@ -22,6 +20,6 @@ public class GatewayConstant {
     public static final String ACCEPT_LANGUAGE = "Accept-Language";
     public static final String APP_VERSION = "app_version";
     public static void addApiEntities(){
-
+        apiEntities.add(new ApiEntity("index","/index","GET","MEMBER"));
     }
 }

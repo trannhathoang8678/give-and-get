@@ -1,5 +1,6 @@
 package fpt.se1601.giveandget.controller;
 
+import fpt.se1601.giveandget.controller.request.RegisterRequest;
 import fpt.se1601.giveandget.interceptor.GatewayConstant;
 import fpt.se1601.giveandget.reponsitory.entity.TokenEntity;
 import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
-public class MainController {
+public class AuthController {
     @Autowired
     TokenService tokenService;
     @Autowired
@@ -50,9 +51,9 @@ public class MainController {
     }
 
     @PutMapping("/register")
-    public String register(@RequestBody UserEntity userEntity) {
+    public String register(@RequestBody RegisterRequest registerRequest) {
         try {
-            return userService.register(userEntity.getEmail(), userEntity.getPassword(), userEntity.getTokenEntity().getToken());
+            return userService.register(registerRequest.getEmail(), registerRequest.getPassword(), registerRequest.getToken());
         } catch (Exception e) {
             e.printStackTrace();
             return "Register error";
@@ -69,8 +70,9 @@ public class MainController {
         }
     }
 
-    @GetMapping("/test")
-    public TokenEntity getToken() {
-        return tokenService.findTokenByEmail("0987654321");
+    @GetMapping("/index")
+    public String test() {
+        System.out.println("test oke");
+        return "test auth";
     }
 }

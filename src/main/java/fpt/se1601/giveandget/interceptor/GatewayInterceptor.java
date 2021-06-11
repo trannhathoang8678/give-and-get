@@ -43,12 +43,12 @@ public class GatewayInterceptor implements HandlerInterceptor {
         String servletPath = request.getServletPath();
         String accessToken = request.getHeader(GatewayConstant.AUTHORIZATION_HEADER);
         ApiEntity apiEntity = getMatchingAPI(httpMethod, servletPath);
-        if (apiEntity.getRole() != null) {
+        if (apiEntity != null) {
             if (accessToken == null) {
                 logger.error("Authorization field in header is null or empty");
                 throw new RuntimeException("Missing token");
             }
-            if(apiEntity.getRole().equals(tokenService))
+            if(apiEntity.getRole().equals(tokenService.getTokenRole(accessToken)))
             {
                 logger.info("Request validated. Start forward request to controller");
                 return true;
