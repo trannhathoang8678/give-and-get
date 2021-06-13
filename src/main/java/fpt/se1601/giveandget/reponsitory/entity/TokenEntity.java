@@ -10,8 +10,6 @@ import java.util.Set;
 @Table(name = "`TOKEN`")
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class TokenEntity {
     @Id

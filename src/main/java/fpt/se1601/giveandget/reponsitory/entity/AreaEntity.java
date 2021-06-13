@@ -10,8 +10,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class AreaEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,4 +21,8 @@ public class AreaEntity {
     private String name;
     @OneToMany(fetch = FetchType.LAZY,mappedBy = "areaEntity")
     private Set<DonationEntity> donationEntities;
+
+    public AreaEntity(String name) {
+        this.name = name;
+    }
 }

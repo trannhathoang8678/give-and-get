@@ -8,8 +8,6 @@ import javax.persistence.*;
 @Table(name = "`COMMENT`")
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class CommentEntity {
     @Id

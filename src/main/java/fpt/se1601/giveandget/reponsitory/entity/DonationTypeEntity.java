@@ -9,8 +9,6 @@ import java.util.Set;
 @Table(name = "`DONATION_TYPE`")
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class DonationTypeEntity {
     @Id
@@ -19,6 +17,9 @@ public class DonationTypeEntity {
     private Integer id;
     @Column(name = "name")
     private String name;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "donationTypeEntity")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donationTypeEntity")
     private Set<DonationEntity> donationEntities;
+    public DonationTypeEntity(String name) {
+        this.name = name;
+    }
 }

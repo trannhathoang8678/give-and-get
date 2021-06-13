@@ -11,7 +11,6 @@ import java.util.Set;
 @Table(name = "`DONATION`")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class DonationEntity {
@@ -24,12 +23,12 @@ public class DonationEntity {
     @Column(name = "address")
     private String address;
     @ManyToOne
-    @JoinColumn(name = "areaID")
+    @JoinColumn(name = "AREA_id")
     private AreaEntity areaEntity;
     @Column(name = "link_images")
     private String linkImages;
     @ManyToOne
-    @JoinColumn(name = "typeID")
+    @JoinColumn(name = "TYPE_id")
     private DonationTypeEntity donationTypeEntity;
     @Column(name = "description")
     private String description;

@@ -9,7 +9,6 @@ import java.util.Set;
 @Table(name = "`REPORT_TYPE`")
 @Getter
 @Setter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportTypeEntity {
