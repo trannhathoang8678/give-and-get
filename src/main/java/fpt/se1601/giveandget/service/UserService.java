@@ -70,6 +70,7 @@ public class UserService {
         if (!sentToken.equals(token))
             return "Wrong token, please check or send another token ";
         temporaryUserEntity.setPassword(new BCryptPasswordEncoder().encode(password));
+        temporaryUserEntity.setRole("MEMBER");
         userRepository.save(temporaryUserEntity);
         return "Register success";
     }

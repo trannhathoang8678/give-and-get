@@ -33,11 +33,11 @@ public class UserEntity {
         this.tokenEntity = tokenEntity;
     }
 
-    @OneToOne(fetch = FetchType.EAGER,cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "TOKEN_id")
     private TokenEntity tokenEntity;
-    @OneToMany( fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<RelationshipEntity> relationshipEntities;
-    @OneToMany( fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
     private Set<CommentEntity> commentEntities;
 }

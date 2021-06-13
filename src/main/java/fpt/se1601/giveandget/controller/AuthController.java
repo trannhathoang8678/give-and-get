@@ -18,21 +18,6 @@ public class AuthController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/")
-    public String index() {
-        return "index";
-    }
-
-    @GetMapping("/admin")
-    public String admin() {
-        return "admin";
-    }
-
-    @GetMapping("/403")
-    public String accessDenied() {
-        return "403";
-    }
-
     @GetMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, HttpServletResponse response) {
         try {
@@ -69,7 +54,6 @@ public class AuthController {
             return "Register error";
         }
     }
-
     @GetMapping("/index")
     public String test() {
         System.out.println("test oke");
