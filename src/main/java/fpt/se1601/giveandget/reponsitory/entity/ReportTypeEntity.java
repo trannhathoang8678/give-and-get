@@ -19,6 +19,6 @@ public class ReportTypeEntity {
     private Integer id;
     @Column(name = "name")
     private String name;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "reportTypeEntity")
     private Set<ReportEntity> reports;
 }

@@ -19,6 +19,6 @@ public class AreaEntity {
     private Integer id;
     @Column(name = "name")
     private String name;
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "areaEntity")
     private Set<DonationEntity> donationEntities;
 }

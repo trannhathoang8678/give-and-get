@@ -30,11 +30,12 @@ public class UserEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "TOKEN_id")
     private TokenEntity tokenEntity;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
     private Set<RelationshipEntity> relationshipEntities;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
     private Set<CommentEntity> commentEntities;
-
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
+    private Set<InterestedDonationEntity> interestedDonationEntities;
     public UserEntity(String email, TokenEntity tokenEntity) {
         this.email = email;
         this.tokenEntity = tokenEntity;

@@ -30,7 +30,7 @@ public class DonationEntity {
     private String linkImages;
     @ManyToOne
     @JoinColumn(name = "typeID")
-    private DonationTypeEntity donationType;
+    private DonationTypeEntity donationTypeEntity;
     @Column(name = "description")
     private String description;
     @Column(name = "created_timestamp")
@@ -38,8 +38,10 @@ public class DonationEntity {
     @Column(name = "is_received")
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean is_received;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donationEntity")
     private Set<RelationshipEntity> relationshipEntities;
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donationEntity")
     private Set<CommentEntity> commentEntities;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donationEntity")
+    private Set<InterestedDonationEntity> interestedDonationEntities;
 }
