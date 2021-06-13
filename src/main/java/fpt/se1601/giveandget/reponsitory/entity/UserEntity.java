@@ -27,12 +27,6 @@ public class UserEntity {
     private String linkContactInfo;
     @Column(name = "role")
     private String role;
-
-    public UserEntity(String email, TokenEntity tokenEntity) {
-        this.email = email;
-        this.tokenEntity = tokenEntity;
-    }
-
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "TOKEN_id")
     private TokenEntity tokenEntity;
@@ -40,4 +34,9 @@ public class UserEntity {
     private Set<RelationshipEntity> relationshipEntities;
     @OneToMany(fetch = FetchType.LAZY)
     private Set<CommentEntity> commentEntities;
+
+    public UserEntity(String email, TokenEntity tokenEntity) {
+        this.email = email;
+        this.tokenEntity = tokenEntity;
+    }
 }
