@@ -27,4 +27,6 @@ public class ReportEntity {
     private ReportTypeEntity reportTypeEntity;
     @Column(name = "description")
     private String description;
+    @Column(name = "reply")
+    private String reply;
 }

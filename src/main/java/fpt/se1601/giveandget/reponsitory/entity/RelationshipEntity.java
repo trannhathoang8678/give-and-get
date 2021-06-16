@@ -9,6 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class RelationshipEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,4 +23,10 @@ public class RelationshipEntity {
     private DonationEntity donationEntity;
     @Column(name = "is_donor")
     private short isDonor;
+
+    public RelationshipEntity(UserEntity userEntity, DonationEntity donationEntity, short isDonor) {
+        this.userEntity = userEntity;
+        this.donationEntity = donationEntity;
+        this.isDonor = isDonor;
+    }
 }

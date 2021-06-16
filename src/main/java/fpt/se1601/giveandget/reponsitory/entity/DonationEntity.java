@@ -42,8 +42,6 @@ public class DonationEntity {
     private Set<RelationshipEntity> relationshipEntities;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "donationEntity")
     private Set<CommentEntity> commentEntities;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donationEntity")
-    private Set<InterestedDonationEntity> interestedDonationEntities;
 
     public DonationEntity(DonationRequest donationRequest) {
         this.id = donationRequest.getId();
@@ -53,5 +51,9 @@ public class DonationEntity {
         this.linkImages = donationRequest.getLinkImages();
         this.donationTypeEntity = donationRequest.getDonationTypeEntity();
         this.description = donationRequest.getDescription();
+    }
+
+    public DonationEntity(Integer id) {
+        this.id = id;
     }
 }

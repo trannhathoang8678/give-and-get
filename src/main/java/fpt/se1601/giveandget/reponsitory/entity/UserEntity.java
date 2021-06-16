@@ -33,10 +33,12 @@ public class UserEntity {
     private Set<RelationshipEntity> relationshipEntities;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
     private Set<CommentEntity> commentEntities;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "userEntity")
-    private Set<InterestedDonationEntity> interestedDonationEntities;
     public UserEntity(String email, TokenEntity tokenEntity) {
         this.email = email;
         this.tokenEntity = tokenEntity;
+    }
+
+    public UserEntity(Integer id) {
+        this.id = id;
     }
 }
