@@ -5,4 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface DonationTypeRepository extends JpaRepository<DonationTypeEntity,Integer> {
     int deleteByName(String name);
+    DonationTypeEntity findByName(String name);
 }

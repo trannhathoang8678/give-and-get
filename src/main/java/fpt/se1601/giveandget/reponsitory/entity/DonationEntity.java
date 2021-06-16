@@ -1,5 +1,6 @@
 package fpt.se1601.giveandget.reponsitory.entity;
 
+import fpt.se1601.giveandget.controller.request.DonationRequest;
 import lombok.*;
 import org.hibernate.annotations.Type;
 
@@ -43,4 +44,14 @@ public class DonationEntity {
     private Set<CommentEntity> commentEntities;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "donationEntity")
     private Set<InterestedDonationEntity> interestedDonationEntities;
+
+    public DonationEntity(DonationRequest donationRequest) {
+        this.id = donationRequest.getId();
+        this.name = donationRequest.getName();
+        this.address = donationRequest.getAddress();
+        this.areaEntity = donationRequest.getAreaEntity();
+        this.linkImages = donationRequest.getLinkImages();
+        this.donationTypeEntity = donationRequest.getDonationTypeEntity();
+        this.description = donationRequest.getDescription();
+    }
 }
