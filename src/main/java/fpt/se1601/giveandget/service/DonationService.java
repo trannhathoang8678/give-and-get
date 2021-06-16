@@ -1,12 +1,11 @@
 package fpt.se1601.giveandget.service;
 
 import fpt.se1601.giveandget.controller.request.DonationRequest;
-import fpt.se1601.giveandget.reponsitory.AreaRepository;
-import fpt.se1601.giveandget.reponsitory.DonationRepository;
-import fpt.se1601.giveandget.reponsitory.DonationTypeRepository;
+import fpt.se1601.giveandget.reponsitory.*;
 import fpt.se1601.giveandget.reponsitory.entity.AreaEntity;
 import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
 import fpt.se1601.giveandget.reponsitory.entity.DonationTypeEntity;
+import fpt.se1601.giveandget.reponsitory.entity.RelationshipEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,6 +21,10 @@ public class DonationService {
     DonationTypeRepository donationTypeRepository;
     @Autowired
     AreaRepository areaRepository;
+    @Autowired
+    TokenRepository tokenRepository;
+    @Autowired
+    UserRepository userRepository;
     public DonationTypeEntity addDonationType(String name)
     {
         try{
@@ -113,10 +116,11 @@ public class DonationService {
             return null;
         }
     }
-    public DonationEntity addDonation(DonationRequest donationRequest)
+    public DonationEntity addDonation(String token,DonationRequest donationRequest)
     {
         try{
             DonationEntity donationEntity = new DonationEntity(donationRequest);
+
             return donationRepository.save(donationEntity);
         }
         catch (Exception e)
@@ -126,6 +130,7 @@ public class DonationService {
             return null;
         }
     }
+
     public DonationEntity updateDonation(DonationRequest donationRequest)
     {
         try{
