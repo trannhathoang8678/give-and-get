@@ -9,8 +9,10 @@ import java.util.Properties;
 
 @Service
 public class SendEmailService {
-    final String username = "raventnhost@gmail.com";
-    final String password = "Hoangnt1@";
+//    final String username = "raventnhost@gmail.com";
+//    final String password = "Hoangnt1@";
+    final String username = "victor.giveandget@gmail.com";
+    final String password = "Huynhhuy2002";
 
     public void sendEmail(String title, String email, String content) throws Exception{
 

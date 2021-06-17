@@ -18,7 +18,7 @@ public class TokenEntity {
     private Integer id;
     @Column(name = "token")
     private String token;
-    @Column(name = "created_timestamp", updatable = false)
+    @Column(name = "created_timestamp", updatable = false, insertable = false)
     private Timestamp createdTimestamp;
 
     @Override
