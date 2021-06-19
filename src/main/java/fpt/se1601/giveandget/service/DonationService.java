@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -153,11 +154,60 @@ public class DonationService {
             return null;
         }
     }
+    public RelationshipEntity addRelationship(int userId, int donationId) {
+        try {
+
+            RelationshipEntity relationshipEntity = new RelationshipEntity(new UserEntity(userId), new DonationEntity(donationId));
+            return relationshipRepository.save(relationshipEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public RelationshipEntity updateRelationship(int id,int userId, int donationId, short isDonor) {
         try {
             RelationshipEntity relationshipEntity = new RelationshipEntity(id,new UserEntity(userId), new DonationEntity(donationId), isDonor);
             return relationshipRepository.save(relationshipEntity);
         } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public List<DonationEntity> getDonationsByTypeInOrder(int typeId,Pageable pageable){
+        try {
+           return donationRepository.findByDonationType(new DonationTypeEntity(typeId),pageable);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public List<DonationEntity> getDonationsByAreaInOrder(int areaId,Pageable pageable){
+        try {
+            return donationRepository.findByArea(new AreaEntity(areaId),pageable);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public List<DonationEntity> getDonationsRelatedToUser(int userId){
+        try{
+            List<DonationEntity> donationEntities = new ArrayList<>();
+            for(RelationshipEntity relationshipEntity: relationshipRepository.findByUser(new UserEntity(userId)))
+                donationEntities.add(relationshipEntity.getDonation());
+                return donationEntities;
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public List<DonationEntity> getDonationsHaveName(String name){
+        try{
+            return donationRepository.findByNameLike(name);
+        }
+        catch (Exception e){
             e.printStackTrace();
             return null;
         }

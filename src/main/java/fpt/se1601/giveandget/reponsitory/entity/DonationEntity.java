@@ -25,12 +25,12 @@ public class DonationEntity {
     private String address;
     @ManyToOne
     @JoinColumn(name = "AREA_id")
-    private AreaEntity areaEntity;
+    private AreaEntity area;
     @Column(name = "link_images")
     private String linkImages;
     @ManyToOne
     @JoinColumn(name = "TYPE_id")
-    private DonationTypeEntity donationTypeEntity;
+    private DonationTypeEntity donationType;
     @Column(name = "description")
     private String description;
     @Column(name = "created_timestamp")
@@ -38,18 +38,18 @@ public class DonationEntity {
     @Column(name = "is_received")
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean is_received;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donationEntity")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation")
     private Set<RelationshipEntity> relationshipEntities;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donationEntity")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation")
     private Set<CommentEntity> commentEntities;
 
     public DonationEntity(DonationRequest donationRequest) {
         this.id = donationRequest.getId();
         this.name = donationRequest.getName();
         this.address = donationRequest.getAddress();
-        this.areaEntity = donationRequest.getAreaEntity();
+        this.area = donationRequest.getAreaEntity();
         this.linkImages = donationRequest.getLinkImages();
-        this.donationTypeEntity = donationRequest.getDonationTypeEntity();
+        this.donationType = donationRequest.getDonationTypeEntity();
         this.description = donationRequest.getDescription();
     }
 

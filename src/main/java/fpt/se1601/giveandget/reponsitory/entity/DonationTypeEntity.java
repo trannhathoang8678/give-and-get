@@ -17,9 +17,13 @@ public class DonationTypeEntity {
     private Integer id;
     @Column(name = "name")
     private String name;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donationTypeEntity")
-    private Set<DonationEntity> donationEntities;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donationType")
+    private Set<DonationEntity> donations;
     public DonationTypeEntity(String name) {
         this.name = name;
+    }
+
+    public DonationTypeEntity(Integer id) {
+        this.id = id;
     }
 }

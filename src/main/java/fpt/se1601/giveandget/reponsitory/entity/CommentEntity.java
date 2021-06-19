@@ -16,10 +16,10 @@ public class CommentEntity {
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_id")
-    private UserEntity userEntity;
+    private UserEntity user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "DONATION_id")
-    private DonationEntity donationEntity;
+    private DonationEntity donation;
     @Column(name = "content")
     private String content;
 }

@@ -17,16 +17,22 @@ public class RelationshipEntity {
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USER_id")
-    private UserEntity userEntity;
-    @ManyToOne(fetch = FetchType.LAZY)
+    private UserEntity user;
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "DONATION_id")
-    private DonationEntity donationEntity;
+    private DonationEntity donation;
+
+    public RelationshipEntity(UserEntity userEntity, DonationEntity donationEntity) {
+        this.user = userEntity;
+        this.donation = donationEntity;
+    }
+
     @Column(name = "is_donor")
     private short isDonor;
 
     public RelationshipEntity(UserEntity userEntity, DonationEntity donationEntity, short isDonor) {
-        this.userEntity = userEntity;
-        this.donationEntity = donationEntity;
+        this.user = userEntity;
+        this.donation = donationEntity;
         this.isDonor = isDonor;
     }
 }

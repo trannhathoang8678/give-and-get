@@ -18,6 +18,6 @@ public class ReportTypeEntity {
     private Integer id;
     @Column(name = "name")
     private String name;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "reportTypeEntity")
+    @OneToMany(fetch = FetchType.LAZY,mappedBy = "reportType")
     private Set<ReportEntity> reports;
 }

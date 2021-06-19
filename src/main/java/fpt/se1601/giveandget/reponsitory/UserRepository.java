@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<UserEntity, Integer> {
 
     @Query(nativeQuery = true, value = "SELECT `role` FROM USER WHERE `TOKEN_id` = ?1")
     String findRoleByTokenId(int tokenId);
-
+    @Query(nativeQuery = true, value = "SELECT `id` FROM USER WHERE `TOKEN_id` = ?1")
+    int findUserIdByTokenId(int tokenId);
     boolean existsByEmail(String email);
 }

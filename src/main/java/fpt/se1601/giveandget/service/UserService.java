@@ -1,6 +1,10 @@
 package fpt.se1601.giveandget.service;
 
+import fpt.se1601.giveandget.reponsitory.RelationshipRepository;
+import fpt.se1601.giveandget.reponsitory.TokenRepository;
 import fpt.se1601.giveandget.reponsitory.UserRepository;
+import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
+import fpt.se1601.giveandget.reponsitory.entity.RelationshipEntity;
 import fpt.se1601.giveandget.reponsitory.entity.TokenEntity;
 import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +12,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserService {
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    TokenRepository tokenRepository;
+    @Autowired
+    RelationshipRepository relationshipRepository;
     @Autowired
     SendEmailService sendEmailService;
     private static final String DATA_FOR_RANDOM_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -106,5 +115,16 @@ public class UserService {
             return "Wrong token, please check or send another token ";
         return "Password: " + temporaryUserEntity.getPassword();
     }
+    public int findUserIdByToken(String token){
+        try{
+            return userRepository.findUserIdByTokenId(tokenRepository.findTokenId(token));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+
 }
 
