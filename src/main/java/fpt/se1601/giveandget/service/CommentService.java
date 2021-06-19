@@ -4,7 +4,10 @@ import fpt.se1601.giveandget.reponsitory.CommentRepository;
 import fpt.se1601.giveandget.reponsitory.DonationRepository;
 import fpt.se1601.giveandget.reponsitory.UserRepository;
 import fpt.se1601.giveandget.reponsitory.entity.CommentEntity;
+import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
 import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,15 +25,29 @@ public class CommentService {
     @Autowired
     private DonationRepository donationRepository;
 
-    public String save(CommentEntity commentEntity) {
-        UserEntity userEntity = userRepository.findOneByEmail(commentEntity.getUserEntity().getEmail());
-        if (userEntity == null)
-            return "No such user!";
+    private final Logger logger = LoggerFactory.getLogger(CommentService.class);
 
-        if (commentEntity.getUserEntity() != null && commentEntity.getDonationEntity() != null)
-            commentRepository.save(commentEntity);
+    public CommentEntity save(CommentEntity commentEntity) {
+        Optional<UserEntity> userOptional = userRepository.findById(commentEntity.getUserEntity().getId());
+        Optional<DonationEntity> donationOptional = donationRepository.findById(commentEntity.getDonationEntity().getId());
 
-        return "Comment is saved successfully!";
+        if (userOptional.isEmpty()) {
+            logger.error("No such user with 'USER_id' = " + commentEntity.getUserEntity().getId());
+            commentEntity.setUserEntity(null);
+            return commentEntity;
+        } else {
+            commentEntity.setUserEntity(userOptional.get());
+        }
+
+        if (donationOptional.isEmpty()) {
+            logger.error("No such donation with 'DONATION_id' = " + commentEntity.getDonationEntity().getId());
+            commentEntity.setDonationEntity(null);
+            return commentEntity;
+        } else {
+            commentEntity.setDonationEntity(donationOptional.get());
+        }
+
+        return commentRepository.save(commentEntity);
     }
 
     public void update(CommentEntity newCommentEntity) {
@@ -41,7 +58,11 @@ public class CommentService {
     }
 
     public CommentEntity delete(int commentId) {
-        return null;
+        CommentEntity commentEntity = get(commentId);
+        if (commentEntity != null) {
+            commentRepository.delete(commentEntity);
+        }
+        return commentEntity;
     }
 
     public CommentEntity get(int commentId) {
