@@ -19,8 +19,7 @@ public class MemberController {
     DonationService donationService;
     @Autowired
     UserService userService;
-    @Autowired
-    DonationRepository donationRepository;
+
 
     @PostMapping(value = "/donation")
     public String addDonation(@RequestHeader("Authorization") String token, @RequestBody DonationRequest donationRequest) {
@@ -52,65 +51,5 @@ public class MemberController {
         }
     }
 
-    @GetMapping(value = "/donation")
-    public List<DonationEntity> getDonationByCreatedTime(@RequestParam int fromItem, @RequestParam int toItem) {
-        try {
-            if (fromItem < 0) return null;
-            toItem = Math.min(toItem, (int) donationRepository.count() - 1);
-            if (fromItem > toItem) fromItem = toItem;
-            Pageable pageable = PageRequest.of(fromItem, toItem, Sort.by("id").descending());
-            return donationService.getDonationsByOrder(pageable);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
-    @GetMapping(value = "/donation/type/{id}")
-    public List<DonationEntity> getDonationByType(@PathVariable int id,@RequestParam int fromItem, @RequestParam int toItem) {
-        try {
-            if (fromItem < 0) return null;
-            toItem = Math.min(toItem, (int) donationRepository.count() - 1);
-            if (fromItem > toItem) fromItem = toItem;
-            return donationService.getDonationsByTypeInOrder(id, PageRequest.of(fromItem,toItem,Sort.by("id").descending()));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-    @GetMapping(value = "/donation/area/{id}")
-    public List<DonationEntity> getDonationByArea(@PathVariable int id,@RequestParam int fromItem, @RequestParam int toItem) {
-        try {
-            if (fromItem < 0) return null;
-            toItem = Math.min(toItem, (int) donationRepository.count() - 1);
-            if (fromItem > toItem) fromItem = toItem;
-            return donationService.getDonationsByAreaInOrder(id, PageRequest.of(fromItem,toItem,Sort.by("id").descending()));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-    @GetMapping(value = "donation/{id}")
-    public List<DonationEntity> getDonationRelatedToUser(@RequestHeader("Authorization") String token){
-        try {
-           return donationService.getDonationsRelatedToUser(userService.findUserIdByToken(token));
-        }
-        catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
-    }
-    @GetMapping(value = "donation/name/{name}")
-    public List<DonationEntity> getDonationHaveName(@PathVariable String name){
-        try{
-            return donationService.getDonationsHaveName(name);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
 }

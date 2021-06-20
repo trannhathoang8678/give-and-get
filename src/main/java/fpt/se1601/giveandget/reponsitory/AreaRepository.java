@@ -5,5 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AreaRepository extends JpaRepository<AreaEntity, Integer> {
     int deleteByName(String name);
+    boolean existsByName(String name);
     AreaEntity findByName(String name);
 }

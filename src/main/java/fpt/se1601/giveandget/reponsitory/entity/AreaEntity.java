@@ -29,4 +29,9 @@ public class AreaEntity {
     public AreaEntity(Integer id) {
         this.id = id;
     }
+
+    public AreaEntity(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
