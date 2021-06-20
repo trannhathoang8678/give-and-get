@@ -9,8 +9,8 @@ import java.util.Properties;
 
 @Service
 public class SendEmailService {
-    final String username = "raventnhost@gmail.com";
-    final String password = "Hoangnt1@";
+    final String username = "giveandgetse@gmail.com";
+    final String password = "hklwsvnyjjhlbkud";
 
     public void sendEmail(String title, String email, String content) throws Exception{
 
@@ -18,9 +18,11 @@ public class SendEmailService {
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
+        props.put("mail.smtp.port", "465");
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true"); //TLS
+        props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.socketFactory.fallback", "false");
         props.put("mail.smtp.ssl.protocols","TLSv1.2");
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
