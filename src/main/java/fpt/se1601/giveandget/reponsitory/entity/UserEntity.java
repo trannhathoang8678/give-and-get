@@ -14,17 +14,25 @@ import java.util.Set;
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column
     private Integer id;
-    @Column(name = "phone")
+    @Column
     private String phone;
-    @Column(name = "password")
+    @Column
     private String password;
-    @Column(name = "email")
+    @Column
     private String email;
+    @Column
+    private String name;
+    @Column
+    private String avatar;
+    @Column
+    private short sex;//ISO 5218
+    @Column
+    private short age;
     @Column(name = "link_contact_info")
     private String linkContactInfo;
-    @Column(name = "role")
+    @Column
     private String role;
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "TOKEN_id")
@@ -33,6 +41,7 @@ public class UserEntity {
     private Set<RelationshipEntity> relationshipEntities;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private Set<CommentEntity> commentEntities;
+
     public UserEntity(String email, TokenEntity tokenEntity) {
         this.email = email;
         this.tokenEntity = tokenEntity;

@@ -1,17 +1,21 @@
 package fpt.se1601.giveandget.controller;
 
 import fpt.se1601.giveandget.controller.request.DonationPropertiesRequest;
-import fpt.se1601.giveandget.reponsitory.AreaRepository;
+import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import fpt.se1601.giveandget.service.DonationService;
+import fpt.se1601.giveandget.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/admin")
 public class AdminController {
     @Autowired
     DonationService donationService;
-
+    @Autowired
+    UserService userService;
     @PostMapping(value = "/area")
     public String addArea(@RequestBody String name)
     {
@@ -63,5 +67,15 @@ public class AdminController {
             return "Delete donation type success";
         else
             return "Delete donation type failed";
+    }
+    @GetMapping(value = "/user")
+    public List<UserEntity> getAllUsers(){
+        try {
+            return userService.getAllUsers();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
     }
 }

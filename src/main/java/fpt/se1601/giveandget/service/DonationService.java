@@ -129,10 +129,8 @@ public class DonationService {
     public DonationEntity addDonation(DonationRequest donationRequest) {
         try {
             DonationEntity donationEntity = new DonationEntity(donationRequest);
-
             return donationRepository.save(donationEntity);
         } catch (Exception e) {
-
             e.printStackTrace();
             return null;
         }
@@ -238,13 +236,11 @@ public class DonationService {
             return null;
         }
     }
-    public int getNumberDonations()
-    {
+
+    public int getNumberDonations() {
         try {
-            return (int)donationRepository.count();
-        }
-        catch (Exception e)
-        {
+            return (int) donationRepository.count();
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }

@@ -1,14 +1,12 @@
 package fpt.se1601.giveandget.controller;
 
 import fpt.se1601.giveandget.controller.request.DonationRequest;
-import fpt.se1601.giveandget.reponsitory.DonationRepository;
+import fpt.se1601.giveandget.controller.request.UserInfoRequest;
 import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
+import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import fpt.se1601.giveandget.service.DonationService;
 import fpt.se1601.giveandget.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,6 +48,14 @@ public class MemberController {
             return "Update donation failed";
         }
     }
-
-
+    @PutMapping
+    public UserEntity updateUserInfo(UserInfoRequest userInfoRequest){
+        try{
+            return userService.updateUserInfo(userInfoRequest);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

@@ -28,20 +28,20 @@ public class TokenService {
         try {
             int tokenId = userRepository.findTokenIdByEmail(userEmail);
             TokenEntity tokenEntity = tokenRepository.findOneById(tokenId);
-            String sessionToken =UUID.randomUUID().toString();
+            String sessionToken = UUID.randomUUID().toString();
             tokenEntity.setToken(sessionToken);
             tokenRepository.save(tokenEntity);
-            return  sessionToken;
-        }catch (Exception e){
+            return sessionToken;
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-    public String getTokenRole(String token){
-        try{
+
+    public String getTokenRole(String token) {
+        try {
             return userRepository.findRoleByTokenId(tokenRepository.findTokenId(token));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Token is not existed");
             return null;
         }

@@ -1,10 +1,9 @@
 package fpt.se1601.giveandget.service;
 
+import fpt.se1601.giveandget.controller.request.UserInfoRequest;
 import fpt.se1601.giveandget.reponsitory.RelationshipRepository;
 import fpt.se1601.giveandget.reponsitory.TokenRepository;
 import fpt.se1601.giveandget.reponsitory.UserRepository;
-import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
-import fpt.se1601.giveandget.reponsitory.entity.RelationshipEntity;
 import fpt.se1601.giveandget.reponsitory.entity.TokenEntity;
 import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -27,6 +25,7 @@ public class UserService {
     SendEmailService sendEmailService;
     private static final String DATA_FOR_RANDOM_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static SecureRandom random = new SecureRandom();
+
     public List<UserEntity> getUsersHaveRole(String role) {
         try {
             return userRepository.findByRole(role);
@@ -35,30 +34,29 @@ public class UserService {
             return null;
         }
     }
-    public UserEntity login(String email, String password){
+
+    public UserEntity login(String email, String password) {
         try {
-             UserEntity userEntity = userRepository.findOneByEmail(email);
-             if(userEntity == null) return null;
-             if(new BCryptPasswordEncoder().matches(password, userEntity.getPassword()))
-                 return userEntity;
-              return null;
-        }
-        catch (Exception e)
-        {
+            UserEntity userEntity = userRepository.findOneByEmail(email);
+            if (userEntity == null) return null;
+            if (new BCryptPasswordEncoder().matches(password, userEntity.getPassword()))
+                return userEntity;
+            return null;
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
-    public boolean isEmailExists(String email){
+
+    public boolean isEmailExists(String email) {
         try {
             return userRepository.existsByEmail(email);
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
+
     public static String generateRandomString(int length) {
         if (length < 1) throw new IllegalArgumentException();
         StringBuilder sb = new StringBuilder(length);
@@ -69,6 +67,7 @@ public class UserService {
         }
         return sb.toString();
     }
+
     public String register(String email, String password, String token) {
         UserEntity temporaryUserEntity = userRepository.findOneByEmail(email);
         if (temporaryUserEntity == null)
@@ -85,8 +84,7 @@ public class UserService {
     }
 
     public String sendTokenToEmail(String email) {
-        try
-        {
+        try {
             UserEntity temporaryUserEntity = userRepository.findOneByEmail(email);
             TokenEntity tokenEntity = new TokenEntity();
             String token = generateRandomString(6);
@@ -97,34 +95,58 @@ public class UserService {
                 tokenEntity.setToken(token);
             }
             userRepository.save(temporaryUserEntity);
-            sendEmailService.sendEmail("Token to verify Give And Get website",email,token);
-            return "Sent token to email";}
-        catch (Exception e)
-        {
+            sendEmailService.sendEmail("Token to verify Give And Get website", email, token);
+            return "Sent token to email";
+        } catch (Exception e) {
             e.printStackTrace();
             return "Send token failed";
         }
     }
-    public String retrievePassword(String email,String token) {
+
+    public String retrievePassword(String email, String token) {
         sendTokenToEmail(email);
         UserEntity temporaryUserEntity = userRepository.findOneByEmail(email);
-        if ( temporaryUserEntity.getPassword() == null)
+        if (temporaryUserEntity.getPassword() == null)
             return "Email have not been registerd";
         String sentToken = temporaryUserEntity.getTokenEntity().getToken();
         if (!sentToken.equals(token))
             return "Wrong token, please check or send another token ";
         return "Password: " + temporaryUserEntity.getPassword();
     }
-    public int findUserIdByToken(String token){
-        try{
+
+    public int findUserIdByToken(String token) {
+        try {
             return userRepository.findUserIdByTokenId(tokenRepository.findTokenId(token));
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return 0;
         }
     }
 
+    public List<UserEntity> getAllUsers() {
+        try {
+            return userRepository.findAll();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public UserEntity updateUserInfo(UserInfoRequest userInfoRequest) {
+        try {
+            UserEntity user = userRepository.findOneById(userInfoRequest.getId());
+            user.setName(userInfoRequest.getName());
+            user.setPhone(userInfoRequest.getPhone());
+            user.setAvatar(userInfoRequest.getAvatar());
+            user.setAge(userInfoRequest.getAge());
+            user.setSex(userInfoRequest.getSex());
+            user.setLinkContactInfo(userInfoRequest.getLinkContactInfo());
+            return userRepository.save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
 }
 

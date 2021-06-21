@@ -12,7 +12,7 @@ public class SendEmailService {
     final String username = "giveandgetse@gmail.com";
     final String password = "hklwsvnyjjhlbkud";
 
-    public void sendEmail(String title, String email, String content) throws Exception{
+    public void sendEmail(String title, String email, String content) throws Exception {
 
         Properties props = new Properties();
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
@@ -23,7 +23,7 @@ public class SendEmailService {
         props.put("mail.smtp.starttls.enable", "true"); //TLS
         props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         props.put("mail.smtp.socketFactory.fallback", "false");
-        props.put("mail.smtp.ssl.protocols","TLSv1.2");
+        props.put("mail.smtp.ssl.protocols", "TLSv1.2");
         Session session = Session.getInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {

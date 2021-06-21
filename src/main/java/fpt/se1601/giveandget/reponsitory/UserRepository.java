@@ -10,7 +10,7 @@ import java.util.List;
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, Integer> {
     List<UserEntity> findByRole(String Role);
-
+    UserEntity findOneById(int id);
     UserEntity findOneByEmail(String email);
 
     @Query(nativeQuery = true, value = "SELECT `TOKEN_id` FROM USER WHERE email = ?1")
