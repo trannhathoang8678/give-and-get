@@ -104,14 +104,20 @@ public class UserService {
     }
 
     public String retrievePassword(String email, String token) {
+        try {
         sendTokenToEmail(email);
         UserEntity temporaryUserEntity = userRepository.findOneByEmail(email);
         if (temporaryUserEntity.getPassword() == null)
-            return "Email have not been registerd";
+            return "Email have not been register";
         String sentToken = temporaryUserEntity.getTokenEntity().getToken();
         if (!sentToken.equals(token))
             return "Wrong token, please check or send another token ";
-        return "Password: " + temporaryUserEntity.getPassword();
+        return "Password: " + temporaryUserEntity.getPassword();}
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return "Email have not been register";
+        }
     }
 
     public int findUserIdByToken(String token) {

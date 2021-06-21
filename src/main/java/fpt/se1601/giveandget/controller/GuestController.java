@@ -1,5 +1,6 @@
 package fpt.se1601.giveandget.controller;
 
+import fpt.se1601.giveandget.controller.request.RegisterRequest;
 import fpt.se1601.giveandget.reponsitory.entity.AreaEntity;
 import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
 import fpt.se1601.giveandget.reponsitory.entity.DonationTypeEntity;
@@ -81,7 +82,7 @@ public class GuestController {
             return null;
         }
     }
-    @GetMapping(value = "donation/{id}")
+    @GetMapping(value = "/donation/{id}")
     public List<DonationEntity> getDonationRelatedToUser(@RequestHeader("Authorization") String token){
         try {
             return donationService.getDonationsRelatedToUser(userService.findUserIdByToken(token));
@@ -91,7 +92,7 @@ public class GuestController {
             return null;
         }
     }
-    @GetMapping(value = "donation/name/{name}")
+    @GetMapping(value = "/donation/name/{name}")
     public List<DonationEntity> getDonationHaveName(@PathVariable String name){
         try{
             return donationService.getDonationsHaveName(name);
@@ -102,5 +103,14 @@ public class GuestController {
             return null;
         }
     }
-
+    @PutMapping(value = "/retrieve")
+    public String retrievePassword(@RequestBody RegisterRequest registerRequest){
+        try {
+            return userService.retrievePassword(registerRequest.getEmail(),registerRequest.getPassword());
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return "Retrieve password failed";
+        }
+    }
 }
