@@ -33,8 +33,8 @@ public class DonationEntity {
     private DonationTypeEntity donationType;
     @Column(name = "description")
     private String description;
-    @Column(name = "created_timestamp")
-    private Timestamp timestamp;
+    @Column(name = "created_timestamp", updatable = false,insertable = false)
+    private Timestamp createdTimestamp;
     @Column(name = "is_received")
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean is_received;

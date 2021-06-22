@@ -3,6 +3,7 @@ package fpt.se1601.giveandget.reponsitory.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "`REPORT`")
@@ -29,4 +30,6 @@ public class ReportEntity {
     private String description;
     @Column(name = "reply")
     private String reply;
+    @Column(name = "created_timestamp", updatable = false,insertable = false)
+    private Timestamp createdTimestamp;
 }

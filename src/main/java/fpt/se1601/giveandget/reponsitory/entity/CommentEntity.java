@@ -3,6 +3,7 @@ package fpt.se1601.giveandget.reponsitory.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "`COMMENT`")
@@ -22,4 +23,8 @@ public class CommentEntity {
     private DonationEntity donation;
     @Column(name = "content")
     private String content;
+    @Column(name = "created_timestamp", updatable = false,insertable = false)
+    private Timestamp createdTimestamp;
+    @Column(name = "updated_timestamp", updatable = false,insertable = false)
+    private Timestamp updatedTimestamp;
 }
