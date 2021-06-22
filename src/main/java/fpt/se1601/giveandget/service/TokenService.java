@@ -14,16 +14,6 @@ public class TokenService {
     TokenRepository tokenRepository;
     @Autowired
     UserRepository userRepository;
-
-    public TokenEntity findTokenByEmail(String email) {
-        try {
-            return tokenRepository.findOneById(userRepository.findTokenIdByEmail(email));
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public String addTokenForUserHasEmail(String userEmail) {
         try {
             int tokenId = userRepository.findTokenIdByEmail(userEmail);

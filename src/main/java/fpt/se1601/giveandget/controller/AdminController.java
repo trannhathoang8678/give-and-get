@@ -78,4 +78,14 @@ public class AdminController {
             return null;
         }
     }
+    @DeleteMapping(value = "/user")
+    public String deleteUser(@RequestBody int userId)
+    {
+        try{
+            return userService.deleteUser(userId);
+        }catch (Exception e){
+            e.printStackTrace();
+            return "Delete user failed";
+        }
+    }
 }
