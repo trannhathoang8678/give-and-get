@@ -128,17 +128,6 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `ggdb`.`REPORT_TYPE`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ggdb`.`REPORT_TYPE` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `name` VARCHAR(90) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
 -- Table `ggdb`.`REPORT`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `ggdb`.`REPORT` (
@@ -146,13 +135,11 @@ CREATE TABLE IF NOT EXISTS `ggdb`.`REPORT` (
   `USER_id` INT NOT NULL,
   `DONATION_id` INT NOT NULL,
   `description` VARCHAR(45) NOT NULL,
-  `REPORT_TYPE_id` INT NOT NULL,
   `reply` TEXT NULL,
   `created_timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   INDEX `fk_REPORT_USER1_idx` (`USER_id` ASC),
   INDEX `fk_REPORT_PRODUCT1_idx` (`DONATION_id` ASC),
-  INDEX `fk_REPORT_REPORT_TYPE1_idx` (`REPORT_TYPE_id` ASC),
   CONSTRAINT `fk_REPORT_USER1`
     FOREIGN KEY (`USER_id`)
     REFERENCES `ggdb`.`USER` (`id`)
@@ -161,11 +148,6 @@ CREATE TABLE IF NOT EXISTS `ggdb`.`REPORT` (
   CONSTRAINT `fk_REPORT_PRODUCT1`
     FOREIGN KEY (`DONATION_id`)
     REFERENCES `ggdb`.`DONATION` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_REPORT_REPORT_TYPE1`
-    FOREIGN KEY (`REPORT_TYPE_id`)
-    REFERENCES `ggdb`.`REPORT_TYPE` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
