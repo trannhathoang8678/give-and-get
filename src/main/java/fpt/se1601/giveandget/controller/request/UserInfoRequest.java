@@ -11,7 +11,6 @@ public class UserInfoRequest {
     private int id;
     private String phone;
     private String name;
-    private String avatar;
     private short sex;//ISO 5218
     private short age;
     private String linkContactInfo;

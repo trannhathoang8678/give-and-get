@@ -12,7 +12,6 @@ public class GiveAndGetApplication {
 
     public static void main(String[] args) {
         GatewayConstant.addApiEntities();
-        FileStorageService.deleteAll();
         FileStorageService.init();
         SpringApplication.run(GiveAndGetApplication.class, args);
     }

@@ -4,6 +4,8 @@ import fpt.se1601.giveandget.controller.request.UserInfoRequest;
 import fpt.se1601.giveandget.reponsitory.RelationshipRepository;
 import fpt.se1601.giveandget.reponsitory.TokenRepository;
 import fpt.se1601.giveandget.reponsitory.UserRepository;
+import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
+import fpt.se1601.giveandget.reponsitory.entity.RelationshipEntity;
 import fpt.se1601.giveandget.reponsitory.entity.TokenEntity;
 import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class UserService {
@@ -25,15 +27,6 @@ public class UserService {
     SendEmailService sendEmailService;
     private static final String DATA_FOR_RANDOM_STRING = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     private static SecureRandom random = new SecureRandom();
-
-    public List<UserEntity> getUsersHaveRole(String role) {
-        try {
-            return userRepository.findByRole(role);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     public UserEntity login(String email, String password) {
         try {
@@ -142,10 +135,17 @@ public class UserService {
             UserEntity user = userRepository.findOneById(userInfoRequest.getId());
             user.setName(userInfoRequest.getName());
             user.setPhone(userInfoRequest.getPhone());
-            user.setAvatar(userInfoRequest.getAvatar());
             user.setAge(userInfoRequest.getAge());
             user.setSex(userInfoRequest.getSex());
             user.setLinkContactInfo(userInfoRequest.getLinkContactInfo());
+            return userRepository.save(user);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    public UserEntity updateAvatarUser(UserEntity user) {
+        try {
             return userRepository.save(user);
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,13 +173,28 @@ public class UserService {
 
     public boolean isDonationOfUser(int userId, int donationId) {
         try {
-            if (relationshipRepository.existsRelationship(userId, donationId, (short)1) == 0)
+            if (relationshipRepository.existsRelationship(userId, donationId, (short) 1) == 0)
                 return true;
             else
                 return false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public List<DonationEntity> getDonationsOfUser(int userId) {
+        try {
+            List<DonationEntity> donations = new LinkedList<>();
+            List<RelationshipEntity> relationshipEntities = relationshipRepository.findByUser(new UserEntity(userId));
+            if (relationshipEntities == null)
+                return null;
+            for (RelationshipEntity relationship : relationshipEntities)
+                donations.add(relationship.getDonation());
+            return donations;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
