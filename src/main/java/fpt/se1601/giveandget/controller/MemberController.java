@@ -1,11 +1,11 @@
 package fpt.se1601.giveandget.controller;
 
 import fpt.se1601.giveandget.controller.request.DonationRequest;
-import fpt.se1601.giveandget.controller.request.UserInfoRequest;
+import fpt.se1601.giveandget.controller.request.ReactionRequest;
 import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
-import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import fpt.se1601.giveandget.service.DonationService;
 import fpt.se1601.giveandget.service.FileStorageService;
+import fpt.se1601.giveandget.service.ReactionService;
 import fpt.se1601.giveandget.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +22,8 @@ public class MemberController {
     UserService userService;
     @Autowired
     FileStorageService fileStorageService;
+    @Autowired
+    ReactionService reactionService;
 
     @PostMapping(value = "/donation")
     public String addDonation(@RequestHeader("Authorization") String token, @RequestBody DonationRequest donationRequest,
@@ -55,7 +57,20 @@ public class MemberController {
             return "Update donation failed";
         }
     }
-
+    @DeleteMapping(value = "/relationship")
+    public String unsaveDonation(@RequestHeader("Authorization") String token, @RequestBody int id) {
+        try {
+            int userId = userService.findUserIdByToken(token);
+            if (!userService.isDonationOfUser(userId, id))
+                return "You have not saved this donation";
+            if (donationService.deleteSaveRelationship(userId,id) != null)
+                return "Unsave donation success";
+            return "Unsave donation failed";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Unsave donation failed";
+        }
+    }
     @DeleteMapping(value = "/donation")
     public String deleteDonation(@RequestHeader("Authorization") String token, @RequestBody int id) {
         try {
@@ -69,7 +84,17 @@ public class MemberController {
             return "Update donation failed";
         }
     }
+    @PutMapping(value = "/donation/receive")
+    public String setReceiveStatusOfDonation(@RequestHeader("Authorization") String token, @RequestBody int id){
+        try {
+            if (!userService.isDonationOfUser(userService.findUserIdByToken(token), id))
+                return "It is not your donation";
+            return donationService.setReceiveStatusOfDonation(id);
 
+        } catch (Exception e) {
+            return "Update donation failed"+e.getMessage();
+        }
+    }
     @GetMapping(value = "/donation")
     public List<DonationEntity> getDonationOfUser(@RequestHeader("Authorization") String token) {
         try {
@@ -80,5 +105,43 @@ public class MemberController {
         }
     }
 
+    @PostMapping(value = "/donation/save")
+    public String saveDonation(@RequestHeader("Authorization") String token, @RequestBody int id) {
+        try {
+            int userId = userService.findUserIdByToken(token);
+            if (!userService.isDonationOfUser(userId, id))
+                return "It is already your donation";
+            if (donationService.addRelationship(userId, id, (short) 0) != null)
+                return "Save donation success";
+            return "Save donation failed";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Save donation failed";
+        }
+    }
+
+    @PostMapping(value = "/report")
+    public String addReport(@RequestHeader("Authorization") String token, @RequestBody ReactionRequest reactionRequest) {
+        try {
+            reactionRequest.setUserId(userService.findUserIdByToken(token));
+            return reactionService.addReport(reactionRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @DeleteMapping(value = "/report")
+    public String deleteComment(@RequestHeader("Authorization") String token, int reportId) {
+        try {
+            if (reactionService.isReportOfUser(userService.findUserIdByToken(token), reportId)) {
+                reactionService.deleteReport(reportId);
+                return "Delete comment success";
+            }
+            return "It is not your comment";
+        } catch (Exception e) {
+            return "Delete comment fail. Error: " + e.getMessage();
+        }
+    }
 
 }

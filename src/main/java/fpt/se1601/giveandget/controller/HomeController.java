@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-public class GuestController {
+public class HomeController {
     @Autowired
     DonationService donationService;
     @Autowired

@@ -42,6 +42,7 @@ public class FileStorageService {
 
     public String save(MultipartFile files[], String fileName) {
         try {
+            deleteFileStartWith(fileName);
             String path;
             path = fileName + '0';
             for (int index = 0; index < files.length; index++) {
@@ -57,6 +58,7 @@ public class FileStorageService {
 
     public String save(MultipartFile file, String fileName) {
         try {
+            deleteFileStartWith(fileName);
             Files.copy(file.getInputStream(), root.resolve(fileName));
             return fileName;
         } catch (Exception e) {

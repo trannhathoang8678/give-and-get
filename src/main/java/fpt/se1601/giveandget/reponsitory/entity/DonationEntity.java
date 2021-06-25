@@ -33,14 +33,14 @@ public class DonationEntity {
     private DonationTypeEntity donationType;
     @Column(name = "description")
     private String description;
-    @Column(name = "created_timestamp", updatable = false,insertable = false)
+    @Column(name = "created_timestamp", updatable = false, insertable = false)
     private Timestamp createdTimestamp;
-    @Column(name = "is_received")
+    @Column(name = "is_received",insertable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean is_received;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation",cascade = {CascadeType.REMOVE})
     private Set<RelationshipEntity> relationshipEntities;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation",cascade = {CascadeType.REMOVE})
     private Set<CommentEntity> commentEntities;
 
     public DonationEntity(DonationRequest donationRequest) {

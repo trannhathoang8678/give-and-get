@@ -23,8 +23,14 @@ public class CommentEntity {
     private DonationEntity donation;
     @Column(name = "content")
     private String content;
-    @Column(name = "created_timestamp", updatable = false,insertable = false)
+    @Column(name = "created_timestamp", updatable = false, insertable = false)
     private Timestamp createdTimestamp;
-    @Column(name = "updated_timestamp", updatable = false,insertable = false)
+    @Column(name = "updated_timestamp", updatable = false, insertable = false)
     private Timestamp updatedTimestamp;
+
+    public CommentEntity(UserEntity user, DonationEntity donation, String content) {
+        this.user = user;
+        this.donation = donation;
+        this.content = content;
+    }
 }

@@ -1,9 +1,7 @@
 package fpt.se1601.giveandget.service;
 
 import fpt.se1601.giveandget.controller.request.UserInfoRequest;
-import fpt.se1601.giveandget.reponsitory.RelationshipRepository;
-import fpt.se1601.giveandget.reponsitory.TokenRepository;
-import fpt.se1601.giveandget.reponsitory.UserRepository;
+import fpt.se1601.giveandget.reponsitory.*;
 import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
 import fpt.se1601.giveandget.reponsitory.entity.RelationshipEntity;
 import fpt.se1601.giveandget.reponsitory.entity.TokenEntity;
@@ -96,6 +94,17 @@ public class UserService {
         }
     }
 
+    public String updateUserRole(int userId, String role) {
+        try {
+            UserEntity user = userRepository.findOneById(userId);
+            user.setRole(role);
+            return "Update role success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Update role failed";
+        }
+    }
+
     public String retrievePassword(String email, String token) {
         try {
             sendTokenToEmail(email);
@@ -144,6 +153,7 @@ public class UserService {
             return null;
         }
     }
+
     public UserEntity updateAvatarUser(UserEntity user) {
         try {
             return userRepository.save(user);
@@ -197,6 +207,7 @@ public class UserService {
             return null;
         }
     }
+
 
 }
 

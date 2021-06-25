@@ -19,7 +19,7 @@ public class AreaEntity {
     private Integer id;
     @Column(name = "name")
     private String name;
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "area")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "area")
     private Set<DonationEntity> donationEntities;
 
     public AreaEntity(String name) {

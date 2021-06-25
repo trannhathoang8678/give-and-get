@@ -20,11 +20,10 @@ public class DonationService {
     AreaRepository areaRepository;
     @Autowired
     RelationshipRepository relationshipRepository;
-    @Autowired
-    UserRepository userRepository;
 
     public DonationTypeEntity addDonationType(String name) {
         try {
+
             return donationTypeRepository.save(new DonationTypeEntity(name));
         } catch (Exception e) {
             e.printStackTrace();
@@ -116,15 +115,6 @@ public class DonationService {
         }
     }
 
-    public List<AreaEntity> findAreas() {
-        try {
-            return areaRepository.findAll();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     public DonationEntity addDonation(DonationRequest donationRequest) {
         try {
             DonationEntity donationEntity = new DonationEntity(donationRequest);
@@ -167,7 +157,8 @@ public class DonationService {
 
     public RelationshipEntity addRelationship(int userId, int donationId, short isDonor) {
         try {
-
+            if(relationshipRepository.existsRelationship(userId,donationId,isDonor) == 1)
+                return null;
             RelationshipEntity relationshipEntity = new RelationshipEntity(new UserEntity(userId), new DonationEntity(donationId), isDonor);
             return relationshipRepository.save(relationshipEntity);
         } catch (Exception e) {
@@ -175,27 +166,16 @@ public class DonationService {
             return null;
         }
     }
-
-    public RelationshipEntity addRelationship(int userId, int donationId) {
+    public String deleteSaveRelationship(int userId, int donationId){
         try {
-
-            RelationshipEntity relationshipEntity = new RelationshipEntity(new UserEntity(userId), new DonationEntity(donationId));
-            return relationshipRepository.save(relationshipEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            relationshipRepository.deleteById(relationshipRepository.findIdOfSaveRelationship(userId,donationId));
+            return "Unsave donation success";
+        }
+        catch (Exception e){
+            return "Unsave donation faile. Error:" + e.getMessage();
         }
     }
 
-    public RelationshipEntity updateRelationship(int id, int userId, int donationId, short isDonor) {
-        try {
-            RelationshipEntity relationshipEntity = new RelationshipEntity(id, new UserEntity(userId), new DonationEntity(donationId), isDonor);
-            return relationshipRepository.save(relationshipEntity);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
 
     public List<DonationEntity> getDonationsByTypeInOrder(int typeId, Pageable pageable) {
         try {
@@ -242,6 +222,17 @@ public class DonationService {
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
+        }
+    }
+    public String setReceiveStatusOfDonation(int id){
+        try{
+            DonationEntity donation = donationRepository.findOneById(id);
+            donation.set_received(true);
+            donationRepository.save(donation);
+            return "Set status receive success";
+        }
+        catch (Exception e){
+            return "Set status receive failed " + e.getMessage();
         }
     }
 }

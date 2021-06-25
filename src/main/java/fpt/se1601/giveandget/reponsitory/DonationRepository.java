@@ -13,7 +13,12 @@ import java.util.List;
 
 public interface DonationRepository extends JpaRepository<DonationEntity, Integer> {
     Page<DonationEntity> findAll(Pageable pageable);
-    List<DonationEntity> findByDonationType(DonationTypeEntity donationTypeEntity,Pageable pageable);
-    List<DonationEntity> findByArea(AreaEntity area,Pageable pageable);
+
+    DonationEntity findOneById(int id);
+
+    List<DonationEntity> findByDonationType(DonationTypeEntity donationTypeEntity, Pageable pageable);
+
+    List<DonationEntity> findByArea(AreaEntity area, Pageable pageable);
+
     List<DonationEntity> findByNameLike(String name);
 }
