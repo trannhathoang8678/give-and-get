@@ -11,8 +11,8 @@ public class DonationRequest {
     private int id;
     private String name;
     private String address;
-    private AreaEntity areaEntity;
+    private int areaId;
     private String linkImages;
-    private DonationTypeEntity donationTypeEntity;
+    private int typeId;
     private String description;
 }

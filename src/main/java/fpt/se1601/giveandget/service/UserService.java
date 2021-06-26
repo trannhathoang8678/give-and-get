@@ -98,16 +98,16 @@ public class UserService {
         try {
             UserEntity user = userRepository.findOneById(userId);
             user.setRole(role);
+            userRepository.save(user);
             return "Update role success";
         } catch (Exception e) {
-            e.printStackTrace();
-            return "Update role failed";
+
+            return "Update role failed. Error: " + e.getMessage();
         }
     }
 
     public String retrievePassword(String email, String token) {
         try {
-            sendTokenToEmail(email);
             UserEntity temporaryUserEntity = userRepository.findOneByEmail(email);
             if (temporaryUserEntity.getPassword() == null)
                 return "Email have not been register";
@@ -132,6 +132,7 @@ public class UserService {
 
     public List<UserEntity> getAllUsers() {
         try {
+
             return userRepository.findAll();
         } catch (Exception e) {
             e.printStackTrace();

@@ -37,10 +37,7 @@ public class UserEntity {
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinColumn(name = "TOKEN_id")
     private TokenEntity tokenEntity;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = {CascadeType.REMOVE})
-    private Set<RelationshipEntity> relationshipEntities;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user",cascade = {CascadeType.REMOVE})
-    private Set<CommentEntity> commentEntities;
+
 
     public UserEntity(String email, TokenEntity tokenEntity) {
         this.email = email;
@@ -50,4 +47,5 @@ public class UserEntity {
     public UserEntity(Integer id) {
         this.id = id;
     }
+
 }

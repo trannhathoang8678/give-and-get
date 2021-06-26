@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class UpdateRoleRequest {
-    private int userId;
+    private int userId ;
     private String role;
 }

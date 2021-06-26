@@ -180,7 +180,7 @@ public class DonationService {
 
     public List<DonationEntity> getDonationsByTypeInOrder(int typeId, Pageable pageable) {
         try {
-            return donationRepository.findByDonationType(new DonationTypeEntity(typeId), pageable);
+            return donationRepository.findByTypeId(typeId, pageable);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -189,7 +189,7 @@ public class DonationService {
 
     public List<DonationEntity> getDonationsByAreaInOrder(int areaId, Pageable pageable) {
         try {
-            return donationRepository.findByArea(new AreaEntity(areaId), pageable);
+            return donationRepository.findByAreaId(areaId, pageable);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

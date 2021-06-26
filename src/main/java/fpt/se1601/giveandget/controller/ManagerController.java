@@ -10,6 +10,7 @@ import fpt.se1601.giveandget.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -73,6 +74,7 @@ public class ManagerController {
     @GetMapping(value = "/user")
     public List<UserEntity> getAllUsers() {
         try {
+
             return userService.getAllUsers();
         } catch (Exception e) {
             e.printStackTrace();

@@ -67,7 +67,7 @@ public class UserController {
     @PutMapping(value = "/retrieve")
     public String retrievePassword(@RequestBody RegisterRequest registerRequest) {
         try {
-            return userService.retrievePassword(registerRequest.getEmail(), registerRequest.getPassword());
+            return userService.retrievePassword(registerRequest.getEmail(), registerRequest.getToken());
         } catch (Exception e) {
             e.printStackTrace();
             return "Retrieve password failed";

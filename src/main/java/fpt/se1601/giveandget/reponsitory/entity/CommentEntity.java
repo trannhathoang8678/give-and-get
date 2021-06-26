@@ -15,22 +15,20 @@ public class CommentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_id")
-    private UserEntity user;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DONATION_id")
-    private DonationEntity donation;
+    @Column(name = "USER_id")
+    private int userId;
+    @Column(name = "DONATION_id")
+    private int donationId;
     @Column(name = "content")
     private String content;
     @Column(name = "created_timestamp", updatable = false, insertable = false)
     private Timestamp createdTimestamp;
-    @Column(name = "updated_timestamp", updatable = false, insertable = false)
-    private Timestamp updatedTimestamp;
+    @Column(name = "update_timestamp", updatable = false, insertable = false)
+    private Timestamp updateTimestamp;
 
-    public CommentEntity(UserEntity user, DonationEntity donation, String content) {
-        this.user = user;
-        this.donation = donation;
+    public CommentEntity(int userId, int donationId, String content) {
+        this.userId = userId;
+        this.donationId = donationId;
         this.content = content;
     }
 }

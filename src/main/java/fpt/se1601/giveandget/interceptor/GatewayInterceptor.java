@@ -44,7 +44,6 @@ public class GatewayInterceptor implements HandlerInterceptor {
         String servletPath = request.getServletPath();
         String accessToken = request.getHeader(GatewayConstant.AUTHORIZATION_HEADER);
         String role = tokenService.getTokenRole(accessToken);
-
         System.out.println(servletPath + "\n" + role);
         if (role != null && role.equals("ADMIN"))
             return true;

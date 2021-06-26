@@ -23,14 +23,12 @@ public class DonationEntity {
     private String name;
     @Column(name = "address")
     private String address;
-    @ManyToOne
-    @JoinColumn(name = "AREA_id")
-    private AreaEntity area;
+    @Column(name = "AREA_id")
+    private int areaId;
     @Column(name = "link_images")
     private String linkImages;
-    @ManyToOne
-    @JoinColumn(name = "TYPE_id")
-    private DonationTypeEntity donationType;
+    @Column(name = "TYPE_id")
+    private int typeId;
     @Column(name = "description")
     private String description;
     @Column(name = "created_timestamp", updatable = false, insertable = false)
@@ -38,19 +36,25 @@ public class DonationEntity {
     @Column(name = "is_received",insertable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean is_received;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation",cascade = {CascadeType.REMOVE})
-    private Set<RelationshipEntity> relationshipEntities;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "donation",cascade = {CascadeType.REMOVE})
-    private Set<CommentEntity> commentEntities;
 
     public DonationEntity(DonationRequest donationRequest) {
         this.id = donationRequest.getId();
         this.name = donationRequest.getName();
         this.address = donationRequest.getAddress();
-        this.area = donationRequest.getAreaEntity();
+        this.areaId = donationRequest.getAreaId();
         this.linkImages = donationRequest.getLinkImages();
-        this.donationType = donationRequest.getDonationTypeEntity();
+        this.typeId = donationRequest.getTypeId();
         this.description = donationRequest.getDescription();
+    }
+
+    public DonationEntity(Integer id, String name, String address, int areaId, String linkImages, int typeId, String description) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.areaId = areaId;
+        this.linkImages = linkImages;
+        this.typeId = typeId;
+        this.description = description;
     }
 
     public DonationEntity(Integer id) {

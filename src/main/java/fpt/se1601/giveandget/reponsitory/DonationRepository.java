@@ -16,9 +16,9 @@ public interface DonationRepository extends JpaRepository<DonationEntity, Intege
 
     DonationEntity findOneById(int id);
 
-    List<DonationEntity> findByDonationType(DonationTypeEntity donationTypeEntity, Pageable pageable);
+    List<DonationEntity> findByTypeId(int typeId, Pageable pageable);
 
-    List<DonationEntity> findByArea(AreaEntity area, Pageable pageable);
+    List<DonationEntity> findByAreaId(int areaId, Pageable pageable);
 
     List<DonationEntity> findByNameLike(String name);
 }

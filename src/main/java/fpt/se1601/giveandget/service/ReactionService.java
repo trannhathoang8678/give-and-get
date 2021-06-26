@@ -32,8 +32,7 @@ public class ReactionService {
 
     public String addComment(ReactionRequest reactionRequest) {
         try {
-            CommentEntity commentEntity = new CommentEntity(new UserEntity(reactionRequest.getUserId())
-                    , new DonationEntity(reactionRequest.getDonationId())
+            CommentEntity commentEntity = new CommentEntity(reactionRequest.getUserId(), reactionRequest.getDonationId()
                     , reactionRequest.getContent());
             commentRepository.save(commentEntity);
             if (sendNotificationToDonationOwner(reactionRequest.getUserId(), reactionRequest.getDonationId()))
