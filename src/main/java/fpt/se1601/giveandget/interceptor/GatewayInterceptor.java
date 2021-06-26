@@ -18,8 +18,9 @@ public class GatewayInterceptor implements HandlerInterceptor {
     private static Logger logger = LogManager.getLogger(GatewayInterceptor.class);
     @Autowired
     TokenService tokenService;
+
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         try {
             return verifyRequest(request);
         } catch (Exception e) {
@@ -42,26 +43,35 @@ public class GatewayInterceptor implements HandlerInterceptor {
         String httpMethod = request.getMethod();
         String servletPath = request.getServletPath();
         String accessToken = request.getHeader(GatewayConstant.AUTHORIZATION_HEADER);
+        String role = tokenService.getTokenRole(accessToken);
+
+        System.out.println(servletPath + "\n" + role);
+        if (role != null && role.equals("ADMIN"))
+            return true;
         ApiEntity apiEntity = getMatchingAPI(httpMethod, servletPath);
         if (apiEntity != null) {
             if (accessToken == null) {
                 logger.error("Authorization field in header is null or empty");
-                throw new RuntimeException("Missing token");
+                return false;
             }
-            if(apiEntity.getRole().equals(tokenService.getTokenRole(accessToken))||apiEntity.getRole().equals("ADMIN"))
-            {
+            if (verifyRole(apiEntity.getRole(),role)) {
                 logger.info("Request validated. Start forward request to controller");
                 return true;
-            }
-            else
-            {
+            } else {
                 logger.info("User don't have permission to access");
                 return false;
             }
         }
-
         logger.info("Request validated. Start forward request to controller");
         return true;
+    }
+
+    private boolean verifyRole(String pathRole, String userRole) {
+        String roles[] = pathRole.split("&");
+        for (String role : roles)
+            if (role.equals(userRole))
+                return true;
+        return false;
     }
 
     private ApiEntity getMatchingAPI(String httpMethod, String path) {

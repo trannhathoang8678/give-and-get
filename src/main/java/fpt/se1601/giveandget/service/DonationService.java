@@ -49,12 +49,13 @@ public class DonationService {
         }
     }
 
-    public int deleteDonationType(String name) {
+    public String deleteDonationType(int id) {
         try {
-            return donationTypeRepository.deleteByName(name);
+             donationTypeRepository.deleteById(id);
+             return "Delete donation type success";
         } catch (Exception e) {
             e.printStackTrace();
-            return 0;
+            return "Delete donation type failed: " + e.getMessage() ;
         }
     }
 
@@ -106,12 +107,12 @@ public class DonationService {
         }
     }
 
-    public int deleteArea(String name) {
+    public String deleteArea(int id) {
         try {
-            return areaRepository.deleteByName(name);
+             areaRepository.deleteById(id);
+             return "Delete area success";
         } catch (Exception e) {
-            e.printStackTrace();
-            return 0;
+            return "Delete area failed" + e.getMessage();
         }
     }
 

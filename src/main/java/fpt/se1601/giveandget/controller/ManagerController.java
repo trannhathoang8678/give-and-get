@@ -40,12 +40,10 @@ public class ManagerController {
             return "Update area failed";
     }
 
-    @DeleteMapping(value = "/area")
-    public String deleteArea(@RequestBody String name) {
-        if (donationService.deleteArea(name) != 0)
-            return "Delete area success";
-        else
-            return "Delete area failed";
+    @DeleteMapping(value = "/area/{id}")
+    public String deleteArea(@PathVariable int id) {
+        return donationService.deleteArea(id);
+
     }
 
     @PostMapping(value = "/type")
@@ -66,12 +64,10 @@ public class ManagerController {
             return "Update donation type failed";
     }
 
-    @DeleteMapping(value = "/type")
-    public String deleteDonationType(@RequestBody String name) {
-        if (donationService.deleteDonationType(name) != 0)
-            return "Delete donation type success";
-        else
-            return "Delete donation type failed";
+    @DeleteMapping(value = "/type/{id}")
+    public String deleteDonationType(@PathVariable int id) {
+        return donationService.deleteDonationType(id);
+
     }
 
     @GetMapping(value = "/user")
