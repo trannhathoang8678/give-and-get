@@ -38,7 +38,6 @@ public class UserEntity {
     @JoinColumn(name = "TOKEN_id")
     private TokenEntity tokenEntity;
 
-
     public UserEntity(String email, TokenEntity tokenEntity) {
         this.email = email;
         this.tokenEntity = tokenEntity;

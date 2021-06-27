@@ -77,14 +77,16 @@ public class UserService {
     public String sendTokenToEmail(String email) {
         try {
             UserEntity temporaryUserEntity = userRepository.findOneByEmail(email);
-            TokenEntity tokenEntity = new TokenEntity();
+            TokenEntity tokenEntity;
             String token = generateRandomString(6);
-            tokenEntity.setToken(token);
+
             if (temporaryUserEntity == null) {
+                tokenEntity = new TokenEntity();
                 temporaryUserEntity = new UserEntity(email, tokenEntity);
             } else {
-                tokenEntity.setToken(token);
+                tokenEntity = temporaryUserEntity.getTokenEntity();
             }
+            tokenEntity.setToken(token);
             userRepository.save(temporaryUserEntity);
             sendEmailService.sendEmail("Token to verify Give And Get website", email, token);
             return "Sent token to email";
