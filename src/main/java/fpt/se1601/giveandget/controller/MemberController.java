@@ -26,7 +26,7 @@ public class MemberController {
     ReactionService reactionService;
 
     @PostMapping(value = "/donation")
-    public String addDonation(@RequestHeader("Authorization") String token, @RequestBody DonationRequest donationRequest,
+    public String addDonation(@RequestHeader("Authorization") String token,  @ModelAttribute("donation") DonationRequest donationRequest,
                               @RequestParam("images") MultipartFile images[]) {
         try {
             int userId = userService.findUserIdByToken(token);

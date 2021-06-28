@@ -30,10 +30,8 @@ public class UserController {
     @GetMapping("/login")
     public String login(@RequestParam String email, @RequestParam String password, HttpServletResponse response) {
         try {
-
             if (userService.login(email, password) != null) {
-                response.addHeader(GatewayConstant.AUTHORIZATION_HEADER, tokenService.addTokenForUserHasEmail(email));
-                return "Login success";
+                return  tokenService.addTokenForUserHasEmail(email);
             }
             if (userService.isEmailExists(email))
                 return "Password is wrong";
