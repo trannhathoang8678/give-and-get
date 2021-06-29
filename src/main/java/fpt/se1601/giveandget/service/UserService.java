@@ -1,5 +1,6 @@
 package fpt.se1601.giveandget.service;
 
+import fpt.se1601.giveandget.controller.request.RegisterRequest;
 import fpt.se1601.giveandget.controller.request.UserInfoRequest;
 import fpt.se1601.giveandget.reponsitory.*;
 import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
@@ -59,17 +60,18 @@ public class UserService {
         return sb.toString();
     }
 
-    public String register(String email, String password, String token) {
-        UserEntity temporaryUserEntity = userRepository.findOneByEmail(email);
+    public String register(RegisterRequest registerRequest) {
+        UserEntity temporaryUserEntity = userRepository.findOneByEmail(registerRequest.getEmail());
         if (temporaryUserEntity == null)
             return "Please click sent token button";
         if (temporaryUserEntity.getPassword() != null)
             return "Email has already regitered";
         String sentToken = temporaryUserEntity.getTokenEntity().getToken();
-        if (!sentToken.equals(token))
+        if (!sentToken.equals(registerRequest.getToken()))
             return "Wrong token, please check or send another token ";
-        temporaryUserEntity.setPassword(new BCryptPasswordEncoder().encode(password));
+        temporaryUserEntity.setPassword(new BCryptPasswordEncoder().encode(registerRequest.getPassword()));
         temporaryUserEntity.setRole("MEMBER");
+        temporaryUserEntity.setName(registerRequest.getName());
         userRepository.save(temporaryUserEntity);
         return "Register success";
     }

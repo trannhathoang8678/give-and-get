@@ -52,7 +52,10 @@ public class HomeController {
             return null;
         }
     }
-
+    @GetMapping(value = "/donation/number")
+    public int getNumberDonations(){
+        return donationService.getNumberDonations();
+    }
     @GetMapping(value = "/donation/type/{id}")
     public List<DonationEntity> getDonationByType(@PathVariable int id, @RequestParam int fromItem, @RequestParam int toItem) {
         try {

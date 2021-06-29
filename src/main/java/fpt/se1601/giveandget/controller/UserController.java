@@ -45,7 +45,7 @@ public class UserController {
     @PutMapping("/register")
     public String register(@RequestBody RegisterRequest registerRequest) {
         try {
-            return userService.register(registerRequest.getEmail(), registerRequest.getPassword(), registerRequest.getToken());
+            return userService.register(registerRequest);
         } catch (Exception e) {
             e.printStackTrace();
             return "Register error";
