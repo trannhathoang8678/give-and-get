@@ -228,12 +228,30 @@ public class DonationService {
     public String setReceiveStatusOfDonation(int id){
         try{
             DonationEntity donation = donationRepository.findOneById(id);
-            donation.set_received(true);
+            donation.setReceived(true);
             donationRepository.save(donation);
             return "Set status receive success";
         }
         catch (Exception e){
             return "Set status receive failed " + e.getMessage();
+        }
+    }
+    public int getNumberReceivedDonation(){
+        try{
+            return donationRepository.getNumberReceiveDonation();
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return -1;
+        }
+    }
+    public List<DonationEntity> getReceivedDonation(){
+        try {
+            return donationRepository.findByIsReceived(true);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            return null;
         }
     }
 }

@@ -35,7 +35,7 @@ public class DonationEntity {
     private Timestamp createdTimestamp;
     @Column(name = "is_received",insertable = false)
     @Type(type = "org.hibernate.type.NumericBooleanType")
-    private boolean is_received;
+    private boolean isReceived;
 
     public DonationEntity(DonationRequest donationRequest) {
         this.id = donationRequest.getId();

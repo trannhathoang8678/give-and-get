@@ -17,8 +17,6 @@ import java.util.List;
 public class HomeController {
     @Autowired
     DonationService donationService;
-    @Autowired
-    UserService userService;
     @GetMapping(value = "/area")
     public List<AreaEntity> getAreas(){
         try

@@ -53,7 +53,7 @@ public class GatewayInterceptor implements HandlerInterceptor {
                 logger.error("Authorization field in header is null or empty");
                 return false;
             }
-            if (verifyRole(apiEntity.getRole(),role)) {
+            if (verifyRole(apiEntity.getRole(), role)) {
                 logger.info("Request validated. Start forward request to controller");
                 return true;
             } else {
@@ -61,6 +61,7 @@ public class GatewayInterceptor implements HandlerInterceptor {
                 return false;
             }
         }
+        System.out.println("Say hi");
         logger.info("Request validated. Start forward request to controller");
         return true;
     }
@@ -68,17 +69,14 @@ public class GatewayInterceptor implements HandlerInterceptor {
     private boolean verifyRole(String pathRole, String userRole) {
         String roles[] = pathRole.split("&");
         for (String role : roles)
-            if (role.equals(userRole))
+            if (role.equals(userRole)) {
+                System.out.println(role + '\n' + userRole);
                 return true;
+            }
         return false;
     }
 
     private ApiEntity getMatchingAPI(String httpMethod, String path) {
-        path = path.trim();
-        if (path.endsWith("/")) {
-            path = path.substring(0, path.lastIndexOf("/"));
-        }
-
         AntPathMatcher matcher = new AntPathMatcher();
         for (ApiEntity apiEntity : GatewayConstant.apiEntities) {
             if (matcher.match(apiEntity.getPattern(), path) && httpMethod.equals(apiEntity.getHttpMethod())) {

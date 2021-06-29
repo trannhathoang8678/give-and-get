@@ -2,6 +2,7 @@ package fpt.se1601.giveandget.controller;
 
 import fpt.se1601.giveandget.controller.request.DonationPropertiesRequest;
 import fpt.se1601.giveandget.controller.request.UpdateRoleRequest;
+import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
 import fpt.se1601.giveandget.reponsitory.entity.ReportEntity;
 import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import fpt.se1601.giveandget.service.DonationService;
@@ -104,5 +105,13 @@ public class ManagerController {
     @PutMapping(value = "/report/{id}")
     public String replyReport(@PathVariable int id, @RequestBody String content) {
         return reactionService.replyReport(id, content);
+    }
+    @GetMapping(value = "/donation")
+    public List<DonationEntity> getReceivedDonation(){
+            return donationService.getReceivedDonation();
+    }
+    @GetMapping(value = "/donation/number")
+    public int getNumberReceivedDonation(){
+        return donationService.getNumberReceivedDonation();
     }
 }

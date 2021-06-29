@@ -140,7 +140,6 @@ public class UserController {
         catch (Exception e){
             return "Delete comment fail. Error: " + e.getMessage();
         }
-
     }
 
 

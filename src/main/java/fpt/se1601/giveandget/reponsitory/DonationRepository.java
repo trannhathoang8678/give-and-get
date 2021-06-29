@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -21,4 +22,7 @@ public interface DonationRepository extends JpaRepository<DonationEntity, Intege
     List<DonationEntity> findByAreaId(int areaId, Pageable pageable);
 
     List<DonationEntity> findByNameLike(String name);
+    @Query(nativeQuery = true, value = "SELECT COUNT(`id`) FROM `DONATION` GROUP BY `is_received` HAVING `is_received` = 1")
+    int getNumberReceiveDonation();
+    List<DonationEntity> findByIsReceived(boolean isReceived);
 }
