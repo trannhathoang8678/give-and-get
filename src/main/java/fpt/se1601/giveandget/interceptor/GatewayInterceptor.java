@@ -61,7 +61,6 @@ public class GatewayInterceptor implements HandlerInterceptor {
                 return false;
             }
         }
-        System.out.println("Say hi");
         logger.info("Request validated. Start forward request to controller");
         return true;
     }

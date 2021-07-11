@@ -1,6 +1,7 @@
 package fpt.se1601.giveandget.service;
 
 import fpt.se1601.giveandget.controller.request.DonationRequest;
+import fpt.se1601.giveandget.controller.response.CommentResponse;
 import fpt.se1601.giveandget.reponsitory.*;
 import fpt.se1601.giveandget.reponsitory.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,10 @@ public class DonationService {
     AreaRepository areaRepository;
     @Autowired
     RelationshipRepository relationshipRepository;
-
+    @Autowired
+    CommentRepository commentRepository;
+    @Autowired
+    UserRepository userRepository;
     public DonationTypeEntity addDonationType(String name) {
         try {
 
@@ -139,11 +143,22 @@ public class DonationService {
 
     public String deleteDonation(int id) {
         try {
+
+            List<RelationshipEntity> relationships = relationshipRepository.findByDonationId(id);
+            if(relationships != null)
+            for(RelationshipEntity relationship : relationships)
+            relationshipRepository.deleteById(relationship.getId());
+            List<CommentEntity> comments = commentRepository.findByDonationId(id);
+            if(comments!=null)
+            {
+                for(CommentEntity comment : comments)
+                    commentRepository.deleteById(comment.getId());
+            }
             donationRepository.deleteById(id);
             return "Delete success";
         } catch (Exception e) {
             e.printStackTrace();
-            return "Delete failed";
+            return null;
         }
     }
 
@@ -199,7 +214,7 @@ public class DonationService {
     public List<DonationEntity> getDonationsRelatedToUser(int userId) {
         try {
             List<DonationEntity> donationEntities = new ArrayList<>();
-            for (RelationshipEntity relationshipEntity : relationshipRepository.findByUser(new UserEntity(userId)))
+            for (RelationshipEntity relationshipEntity : relationshipRepository.findByUserId(userId))
                 donationEntities.add(relationshipEntity.getDonation());
             return donationEntities;
         } catch (Exception e) {
@@ -216,7 +231,21 @@ public class DonationService {
             return null;
         }
     }
-
+    public List<CommentResponse> getCommentOfDonation(int donationId){
+        try {
+            List<CommentEntity> commentEntities = commentRepository.findByDonationId(donationId);
+            List<CommentResponse> commentResponses = new ArrayList<>();
+            for(CommentEntity commentEntity : commentEntities){
+                commentResponses.add(new CommentResponse(commentEntity, userRepository.findNameById(commentEntity.getId())));
+            }
+            return commentResponses;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return null;
+        }
+    }
     public int getNumberDonations() {
         try {
             return (int) donationRepository.count();

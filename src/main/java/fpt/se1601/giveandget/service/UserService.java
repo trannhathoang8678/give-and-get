@@ -110,7 +110,7 @@ public class UserService {
         }
     }
 
-    public String retrievePassword(String email, String token) {
+    public String retrievePassword(String email, String token, String newPassword) {
         try {
             UserEntity temporaryUserEntity = userRepository.findOneByEmail(email);
             if (temporaryUserEntity.getPassword() == null)
@@ -118,10 +118,24 @@ public class UserService {
             String sentToken = temporaryUserEntity.getTokenEntity().getToken();
             if (!sentToken.equals(token))
                 return "Wrong token, please check or send another token ";
-            return "Password: " + temporaryUserEntity.getPassword();
+            return updatePassword(email, temporaryUserEntity.getPassword(), newPassword);
         } catch (Exception e) {
             e.printStackTrace();
             return "Email have not been register";
+        }
+    }
+
+    public String updatePassword(String email, String oldPassword, String newPassword) {
+        try {
+            UserEntity userEntity = userRepository.findOneByEmail(email);
+            if (userEntity.getPassword() != oldPassword && new BCryptPasswordEncoder().matches(oldPassword,userEntity.getPassword()))
+                return "Your current password is false";
+            userEntity.setPassword(new BCryptPasswordEncoder().encode(newPassword));
+            userRepository.save(userEntity);
+                return "Update password success";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Error in update: " + e.getMessage();
         }
     }
 
@@ -171,6 +185,10 @@ public class UserService {
     public String deleteUser(int userId) {
         try {
             userRepository.deleteById(userId);
+            List<RelationshipEntity> relationships = relationshipRepository.findByUserId(userId);
+            if (relationships != null)
+                for (RelationshipEntity relationship : relationships)
+                    relationshipRepository.deleteById(relationship.getId());
             return "Delete user successfully";
         } catch (Exception e) {
             return "Delete user failed";
@@ -188,7 +206,7 @@ public class UserService {
 
     public boolean isDonationOfUser(int userId, int donationId) {
         try {
-            if (relationshipRepository.existsRelationship(userId, donationId, (short) 1) == 0)
+            if (relationshipRepository.existsRelationship(userId, donationId, (short) 1) != 0)
                 return true;
             else
                 return false;
@@ -201,7 +219,7 @@ public class UserService {
     public List<DonationEntity> getDonationsOfUser(int userId) {
         try {
             List<DonationEntity> donations = new LinkedList<>();
-            List<RelationshipEntity> relationshipEntities = relationshipRepository.findByUser(new UserEntity(userId));
+            List<RelationshipEntity> relationshipEntities = relationshipRepository.findByUserId(userId);
             if (relationshipEntities == null)
                 return null;
             for (RelationshipEntity relationship : relationshipEntities)

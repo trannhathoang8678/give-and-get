@@ -1,9 +1,9 @@
 package fpt.se1601.giveandget.controller;
 
+import fpt.se1601.giveandget.controller.request.ChangPassWordRequest;
 import fpt.se1601.giveandget.controller.request.ReactionRequest;
 import fpt.se1601.giveandget.controller.request.RegisterRequest;
 import fpt.se1601.giveandget.controller.request.UserInfoRequest;
-import fpt.se1601.giveandget.interceptor.GatewayConstant;
 import fpt.se1601.giveandget.reponsitory.entity.DonationEntity;
 import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import fpt.se1601.giveandget.service.*;
@@ -31,7 +31,7 @@ public class UserController {
     public String login(@RequestParam String email, @RequestParam String password, HttpServletResponse response) {
         try {
             if (userService.login(email, password) != null) {
-                return  tokenService.addTokenForUserHasEmail(email);
+                return tokenService.addTokenForUserHasEmail(email);
             }
             if (userService.isEmailExists(email))
                 return "Password is wrong";
@@ -65,10 +65,19 @@ public class UserController {
     @PutMapping(value = "/retrieve")
     public String retrievePassword(@RequestBody RegisterRequest registerRequest) {
         try {
-            return userService.retrievePassword(registerRequest.getEmail(), registerRequest.getToken());
+            return userService.retrievePassword(registerRequest.getEmail(), registerRequest.getToken(), registerRequest.getPassword());
         } catch (Exception e) {
             e.printStackTrace();
             return "Retrieve password failed";
+        }
+    }
+
+    @PostMapping(value = "/change")
+    public String changePassword(@RequestBody ChangPassWordRequest changPassWordRequest) {
+        try {
+            return userService.updatePassword(changPassWordRequest.getEmail(), changPassWordRequest.getOldPassword(), changPassWordRequest.getNewPassWord());
+        } catch (Exception e) {
+            return "Error because one of the properties is null";
         }
     }
 
@@ -120,24 +129,23 @@ public class UserController {
     @PostMapping(value = "/comment")
     public String addComment(@RequestHeader("Authorization") String token, @RequestBody ReactionRequest reactionRequest) {
         try {
-        reactionRequest.setUserId(userService.findUserIdByToken(token));
-        return reactionService.addComment(reactionRequest);}
-        catch (Exception e){
+            reactionRequest.setUserId(userService.findUserIdByToken(token));
+            return reactionService.addComment(reactionRequest);
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
     @DeleteMapping(value = "/comment")
     public String deleteComment(@RequestHeader("Authorization") String token, int commentId) {
-        try{
-                if(reactionService.isCommentOfUser(userService.findUserIdByToken(token),commentId))
-                {
-                    reactionService.deleteComment(commentId);
-                    return "Delete comment success";
-                }
+        try {
+            if (reactionService.isCommentOfUser(userService.findUserIdByToken(token), commentId)) {
+                reactionService.deleteComment(commentId);
+                return "Delete comment success";
+            }
             return "It is not your comment";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return "Delete comment fail. Error: " + e.getMessage();
         }
     }

@@ -1,5 +1,6 @@
 package fpt.se1601.giveandget.service;
 
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
@@ -10,18 +11,20 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
-import java.util.List;
 import java.util.stream.Stream;
 
 @Service
 public class FileStorageService {
-    private static final Path root = Paths.get(System.getProperty("user.dir") + "/upload");
+    private static final Path root = Paths.get(System.getProperty("user.dir") + "/webdocu-client/public");
 
     public static void init() {
         try {
             File file = new File(String.valueOf(root));
             if (!file.exists())
+            {
+                System.out.println(root.toString());
                 Files.createDirectory(root);
+            }
         } catch (IOException e) {
             throw new RuntimeException("Could not initialize folder for upload!");
         }
@@ -44,11 +47,12 @@ public class FileStorageService {
         try {
             deleteFileStartWith(fileName);
             String path;
-            path = fileName + '0';
+            path = fileName + '0' + '.' + FilenameUtils.getExtension(files[0].getOriginalFilename());
             for (int index = 0; index < files.length; index++) {
-                Files.copy(files[index].getInputStream(), root.resolve(fileName + index));
+                File dest = new File(root.toString() + '/' + fileName + index + '.' + FilenameUtils.getExtension(files[index].getOriginalFilename()));
+                Files.copy(files[index].getInputStream(), dest.toPath());
                 if (index > 0)
-                    path += '&' + fileName + index;
+                    path += '&' + fileName + index + '.' + FilenameUtils.getExtension(files[index].getOriginalFilename());
             }
             return path;
         } catch (Exception e) {

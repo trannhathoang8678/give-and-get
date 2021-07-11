@@ -26,11 +26,12 @@ public class MemberController {
     ReactionService reactionService;
 
     @PostMapping(value = "/donation")
-    public String addDonation(@RequestHeader("Authorization") String token,  @ModelAttribute("donation") DonationRequest donationRequest,
+    public String addDonation(@RequestHeader("Authorization") String token, @ModelAttribute("donation") DonationRequest donationRequest,
                               @RequestParam("images") MultipartFile images[]) {
         try {
             int userId = userService.findUserIdByToken(token);
-            donationRequest.setLinkImages(fileStorageService.save(images, "donation_" + userId));
+            donationRequest.setLinkImages(fileStorageService.save(images, "donation_" + userId + "_"
+                    + (donationService.getNumberDonations() + 1)));
             DonationEntity donationEntity = donationService.addDonation(donationRequest);
             if (donationEntity == null)
                 return "Add donation failed";
@@ -57,13 +58,14 @@ public class MemberController {
             return "Update donation failed";
         }
     }
+
     @DeleteMapping(value = "/relationship")
     public String unsaveDonation(@RequestHeader("Authorization") String token, @RequestBody int id) {
         try {
             int userId = userService.findUserIdByToken(token);
             if (!userService.isDonationOfUser(userId, id))
                 return "You have not saved this donation";
-            if (donationService.deleteSaveRelationship(userId,id) != null)
+            if (donationService.deleteSaveRelationship(userId, id) != null)
                 return "Unsave donation success";
             return "Unsave donation failed";
         } catch (Exception e) {
@@ -71,30 +73,33 @@ public class MemberController {
             return "Unsave donation failed";
         }
     }
-    @DeleteMapping(value = "/donation")
-    public String deleteDonation(@RequestHeader("Authorization") String token, @RequestBody int id) {
+
+    @DeleteMapping(value = "/donation/{id}")
+    public String deleteDonation(@RequestHeader("Authorization") String token, @PathVariable int id) {
         try {
             if (!userService.isDonationOfUser(userService.findUserIdByToken(token), id))
                 return "It is not your donation";
             if (donationService.deleteDonation(id) != null)
-                return "Update donation success";
-            return "Update donation failed";
+                return "Delete donation success";
+            return "Delete donation failed";
         } catch (Exception e) {
             e.printStackTrace();
-            return "Update donation failed";
+            return "Delete donation failed";
         }
     }
-    @PutMapping(value = "/donation/receive")
-    public String setReceiveStatusOfDonation(@RequestHeader("Authorization") String token, @RequestBody int id){
+
+    @PutMapping(value = "/donation/receive/{id}")
+    public String setReceiveStatusOfDonation(@RequestHeader("Authorization") String token, @PathVariable int id) {
         try {
             if (!userService.isDonationOfUser(userService.findUserIdByToken(token), id))
                 return "It is not your donation";
             return donationService.setReceiveStatusOfDonation(id);
 
         } catch (Exception e) {
-            return "Update donation failed"+e.getMessage();
+            return "Update donation failed" + e.getMessage();
         }
     }
+
     @GetMapping(value = "/donation")
     public List<DonationEntity> getDonationOfUser(@RequestHeader("Authorization") String token) {
         try {
