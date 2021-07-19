@@ -25,6 +25,9 @@ public class DonationService {
     CommentRepository commentRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    ReportRepository reportRepository;
+
     public DonationTypeEntity addDonationType(String name) {
         try {
 
@@ -55,11 +58,11 @@ public class DonationService {
 
     public String deleteDonationType(int id) {
         try {
-             donationTypeRepository.deleteById(id);
-             return "Delete donation type success";
+            donationTypeRepository.deleteById(id);
+            return "Delete donation type success";
         } catch (Exception e) {
             e.printStackTrace();
-            return "Delete donation type failed: " + e.getMessage() ;
+            return "Delete donation type failed: " + e.getMessage();
         }
     }
 
@@ -113,8 +116,8 @@ public class DonationService {
 
     public String deleteArea(int id) {
         try {
-             areaRepository.deleteById(id);
-             return "Delete area success";
+            areaRepository.deleteById(id);
+            return "Delete area success";
         } catch (Exception e) {
             return "Delete area failed" + e.getMessage();
         }
@@ -145,16 +148,21 @@ public class DonationService {
         try {
 
             List<RelationshipEntity> relationships = relationshipRepository.findByDonationId(id);
-            if(relationships != null)
-            for(RelationshipEntity relationship : relationships)
-            relationshipRepository.deleteById(relationship.getId());
+            if (relationships != null)
+                for (RelationshipEntity relationship : relationships)
+                    relationshipRepository.deleteById(relationship.getId());
             List<CommentEntity> comments = commentRepository.findByDonationId(id);
-            if(comments!=null)
-            {
-                for(CommentEntity comment : comments)
+            if (comments != null) {
+                for (CommentEntity comment : comments)
                     commentRepository.deleteById(comment.getId());
             }
-            donationRepository.deleteById(id);
+            List<ReportEntity> reportEntities = reportRepository.findByDonation(new DonationEntity(id));
+            if (reportEntities != null)
+            {
+                for(ReportEntity reportEntity : reportEntities)
+                    reportRepository.deleteById(reportEntity.getId());
+            }
+                donationRepository.deleteById(id);
             return "Delete success";
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,7 +181,7 @@ public class DonationService {
 
     public RelationshipEntity addRelationship(int userId, int donationId, short isDonor) {
         try {
-            if(relationshipRepository.existsRelationship(userId,donationId,isDonor) == 1)
+            if (relationshipRepository.existsRelationship(userId, donationId, isDonor) == 1)
                 return null;
             RelationshipEntity relationshipEntity = new RelationshipEntity(new UserEntity(userId), new DonationEntity(donationId), isDonor);
             return relationshipRepository.save(relationshipEntity);
@@ -182,12 +190,12 @@ public class DonationService {
             return null;
         }
     }
-    public String deleteSaveRelationship(int userId, int donationId){
+
+    public String deleteSaveRelationship(int userId, int donationId) {
         try {
-            relationshipRepository.deleteById(relationshipRepository.findIdOfSaveRelationship(userId,donationId));
+            relationshipRepository.deleteById(relationshipRepository.findIdOfSaveRelationship(userId, donationId));
             return "Unsave donation success";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return "Unsave donation faile. Error:" + e.getMessage();
         }
     }
@@ -231,21 +239,21 @@ public class DonationService {
             return null;
         }
     }
-    public List<CommentResponse> getCommentOfDonation(int donationId){
+
+    public List<CommentResponse> getCommentOfDonation(int donationId) {
         try {
             List<CommentEntity> commentEntities = commentRepository.findByDonationId(donationId);
             List<CommentResponse> commentResponses = new ArrayList<>();
-            for(CommentEntity commentEntity : commentEntities){
+            for (CommentEntity commentEntity : commentEntities) {
                 commentResponses.add(new CommentResponse(commentEntity, userRepository.findNameById(commentEntity.getId())));
             }
             return commentResponses;
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
+
     public int getNumberDonations() {
         try {
             return (int) donationRepository.count();
@@ -254,31 +262,31 @@ public class DonationService {
             return 0;
         }
     }
-    public String setReceiveStatusOfDonation(int id){
-        try{
+
+    public String setReceiveStatusOfDonation(int id) {
+        try {
             DonationEntity donation = donationRepository.findOneById(id);
             donation.setReceived(true);
             donationRepository.save(donation);
             return "Set status receive success";
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             return "Set status receive failed " + e.getMessage();
         }
     }
-    public int getNumberReceivedDonation(){
-        try{
+
+    public int getNumberReceivedDonation() {
+        try {
             return donationRepository.getNumberReceiveDonation();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return -1;
         }
     }
-    public List<DonationEntity> getReceivedDonation(){
+
+    public List<DonationEntity> getReceivedDonation() {
         try {
             return donationRepository.findByIsReceived(true);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

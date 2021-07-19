@@ -148,5 +148,13 @@ public class MemberController {
             return "Delete comment fail. Error: " + e.getMessage();
         }
     }
-
+    @GetMapping(value = "/check/{donationId}")
+    public boolean isDonationOfUser(@RequestHeader("Authorization") String token,@PathVariable int donationId){
+        try {
+            return userService.isDonationOfUser(userService.findUserIdByToken(token),donationId);
+        }catch (Exception e){
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

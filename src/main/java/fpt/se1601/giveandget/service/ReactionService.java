@@ -55,8 +55,6 @@ public class ReactionService {
             e.printStackTrace();
             return false;
         }
-
-
     }
 
     public String deleteComment(int id) {
@@ -105,9 +103,8 @@ public class ReactionService {
 
     public List<ReportEntity> getAllReport() {
         try {
-
-            return reportRepository.findAll(Sort.by("created_timestamp").descending()
-                    .and(Sort.by("donationId").descending().and(Sort.by("userId").descending())));
+            return reportRepository.findAll(Sort.by("createdTimestamp").descending()
+                    .and(Sort.by("donationId").descending()));
         } catch (Exception e) {
             e.printStackTrace();
             return null;

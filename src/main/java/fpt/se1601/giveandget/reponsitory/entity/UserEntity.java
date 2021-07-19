@@ -3,7 +3,6 @@ package fpt.se1601.giveandget.reponsitory.entity;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Table(name = "`USER`")

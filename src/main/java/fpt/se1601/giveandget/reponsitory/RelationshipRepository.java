@@ -1,13 +1,13 @@
 package fpt.se1601.giveandget.reponsitory;
 
 import fpt.se1601.giveandget.reponsitory.entity.RelationshipEntity;
-import fpt.se1601.giveandget.reponsitory.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-
+@Repository
 public interface RelationshipRepository extends JpaRepository<RelationshipEntity, Integer> {
     List<RelationshipEntity> findByUserId(int userId);
 
