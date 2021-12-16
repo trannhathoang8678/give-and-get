@@ -1,5 +1,7 @@
-# give-and-get
-## Product functions
+# Give and get
+## Desscription
+A website for people to donate old items and get what they need.
+## Feature
 1. Display function
 * Display latest donations
 * Display donations by searching (type, area, name)
